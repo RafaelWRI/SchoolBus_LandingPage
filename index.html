@@ -1,0 +1,3111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Transporte Escolar Electrificado en Bogotá</title>
+  <style>
+    :root {
+      --g: #0B7A38;
+      --g2: #11AC4E;
+      --g3: #36D17A;
+      --bg: #F0FBF3;
+      --bg2: #F2F7FA;
+      --ink: #10303A;
+      --lime: #D7E600;
+      --mut: #4A6670
+    }
+    * {
+      box-sizing: border-box
+    }
+    html {
+      font-size: 125%;
+      scroll-behavior: smooth;
+      scroll-padding-top: 70px
+    } /* +25 %: todos los tamaños en rem crecen */
+    body {
+      margin: 0;
+      font: 21px/1.6"Segoe UI", system-ui, sans-serif;
+      color: var(--ink);
+      background: #fff
+    }
+    h1, h2, h3 {
+      line-height: 1.15;
+      margin: 0 0 .5em
+    }
+    h2 {
+      font-size: clamp(1.7rem, 4vw, 2.4rem)
+    }
+    h3 {
+      font-size: 1.1rem
+    }
+    a {
+      color: var(--g)
+    }
+    a:focus-visible, button:focus-visible, summary:focus-visible {
+      outline: 3px solid var(--ink);
+      outline-offset: 2px
+    }
+    .w {
+      max-width: 1080px;
+      margin: auto;
+      padding: 0 20px
+    }
+    section {
+      padding: 64px 0
+    }
+    .alt {
+      background: #E6F4EA
+    }
+    .alt2 {
+      background: #a1d99b
+    }
+    .alt3 {
+      background: #31a354
+    }
+    .lead {
+      max-width: 62ch;
+      color: var(--mut)
+    }
+    .pend {
+      background: var(--lime);
+      padding: 0 .3em;
+      border-radius: 3px;
+      font-size: .85em
+    }
+
+    /* HEADER MODIFICADO CON FONDO Y TEXTO BLANCO EN NEGRITA */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 9;
+      background: #0d4f2e;
+      border-bottom: 1px solid rgba(255, 255, 255, .15)
+    }
+    footer {
+      background: #0d4f2e;
+      border-top: 1px solid rgba(255, 255, 255, .15);
+      color: #ffffff;
+      /* Asegura que el texto y los enlaces se lean sobre el fondo oscuro */
+      padding: 40px 0
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-height: 64px
+    }
+    header .w {
+      max-width: 1440px
+    }
+    .logo {
+      font-weight: 700;
+      color: #fff;
+      flex: 1;
+      text-decoration: none
+    }
+    .nav::after {
+      content: "";
+      flex: 1
+    }
+    nav ul {
+      display: flex;
+      gap: 4px;
+      list-style: none;
+      margin: 0;
+      padding: 0
+    }
+    nav a {
+      display: block;
+      padding: 8px 9px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 700;
+      font-size: .94rem;
+      border-radius: 6px
+    } /* +30 % vs. original */
+    nav a:hover {
+      background: rgba(255, 255, 255, .15);
+      color: #fff
+    }
+    .sub {
+      position: relative
+    }
+    .sub>a:after {
+      content: " \25BE"
+    }
+    .drop {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      min-width: 350px;
+      flex-direction: column;
+      gap: 2px;
+      background: #0d4f2e;
+      border: 1px solid rgba(255, 255, 255, .15);
+      border-radius: 8px;
+      padding: 6px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, .2)
+    }
+    .sub:hover>.drop, .sub:focus-within>.drop {
+      display: flex
+    }
+    #mb {
+      display: none;
+      background: none;
+      border: 2px solid #fff;
+      color: #fff;
+      font-weight: 700;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font: inherit;
+      cursor: pointer
+    }
+
+    @media(max-width:1320px) {
+      #mb {
+        display: block
+      }
+      .nav::after {
+        display: none
+      }
+      .sub>a:after {
+        content: ""
+      }
+      .drop {
+        display: flex;
+        position: static;
+        min-width: 0;
+        border: 0;
+        box-shadow: none;
+        padding: 0 0 0 16px;
+        background: transparent
+      }
+      nav {
+        display: none;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        background: #0d4f2e;
+        border-bottom: 1px solid rgba(255, 255, 255, .15)
+      }
+      nav.open {
+        display: block
+      }
+      nav ul {
+        flex-direction: column;
+        padding: 8px 20px
+      }
+    }
+
+    .hero {
+      background: linear-gradient(rgba(8, 40, 30, .62), rgba(8, 40, 30, .62)), linear-gradient(135deg, #0B7A38, #36D17A);
+      color: #fff;
+      min-height: calc(100vh - 64px);
+      display: flex;
+      align-items: center;
+      padding: 40px 0
+    }
+    .hh {
+      position: relative;
+      overflow: hidden;
+      padding: 0;
+      min-height: min(80vh, 620px);
+      display: flex;
+      align-items: center
+    }
+    .hh img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 70% center
+    }
+    .hh:before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(90deg, rgba(8, 40, 30, .82) 0%, rgba(8, 40, 30, .55) 45%, rgba(8, 40, 30, .1) 100%)
+    }
+    .hh .w {
+      position: relative;
+      z-index: 2;
+      padding-top: 80px;
+      padding-bottom: 80px
+    }
+    @media(max-width:800px) {
+      .hh:before {
+        background: rgba(8, 40, 30, .6)
+      }
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 6vw, 3.8rem);
+      max-width: 16ch
+    }
+    .hero p {
+      max-width: 56ch;
+      font-size: 1.2rem
+    }
+    .btn {
+      display: inline-block;
+      background: var(--lime);
+      color: #10303A;
+      font-weight: 700;
+      padding: 14px 26px;
+      border-radius: 999px;
+      text-decoration: none;
+      border: 0;
+      font-size: 1rem;
+      cursor: pointer
+    }
+    .btn.g {
+      background: var(--g);
+      color: #fff
+    }
+    .grid {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    }
+
+    .card {
+      background: #ffffff;
+      border: 1px solid #e1ece5;
+      border-top: 4px solid var(--g);
+      /* Borde acentuado superior tipo ficha */
+      border-radius: 12px;
+      padding: 24px 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    /* Efecto al pasar el cursor con fondo verde */
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(11, 122, 56, 0.12);
+      background-color: var(--bg);
+      /* O usa un tono directo como #eaf4ed */
+    }
+
+    /* Estilos para destacar las cifras/datos dentro de la ficha */
+    .card .big {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: #0d4f2e;
+      line-height: 1.1;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--mut);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #cfe5d6;
+      border-radius: 12px;
+      padding: 18px
+    }
+    .card p {
+      margin: 0;
+      color: var(--mut)
+    }
+    .big {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--g);
+      line-height: 1.1;
+      margin-bottom: 6px
+    }
+    .two {
+      display: grid;
+      gap: 32px;
+      grid-template-columns: 1fr 1fr
+    }
+    @media(max-width:800px) {
+      .two {
+        grid-template-columns: 1fr
+      }
+    }
+    .ph {
+      min-height: 260px;
+      border-radius: 12px;
+      background: var(--bg2);
+      border: 2px dashed var(--g3);
+      display: grid;
+      place-items: center;
+      color: var(--mut);
+      text-align: center;
+      padding: 16px
+    }
+    blockquote {
+      margin: 24px 0;
+      padding: 16px 22px;
+      border-left: 6px solid var(--g3);
+      background: #fff;
+      font-size: 1.2rem
+    }
+    .bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 10px 0
+    }
+    .bar span {
+      width: 210px;
+      flex: none
+    }
+    .bar i {
+      display: block;
+      height: 28px;
+      background: var(--g2);
+      border-radius: 4px;
+      transition: width 1s;
+      width: 0
+    }
+    .tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 0 0 20px
+    }
+    .tabs button {
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 2px solid var(--g);
+      background: #fff;
+      color: var(--g);
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer
+    }
+    .tabs button[aria-pressed=true] {
+      background: var(--g);
+      color: #fff
+    }
+    ol.steps {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 12px;
+      counter-reset: s
+    }
+    ol.steps li {
+      counter-increment: s;
+      background: #fff;
+      border: 1px solid #cfe5d6;
+      border-radius: 12px;
+      padding: 16px 16px 16px 64px;
+      position: relative
+    }
+    ol.steps li:before {
+      content: counter(s);
+      position: absolute;
+      left: 16px;
+      top: 14px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--g);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-weight: 700
+    }
+    details {
+      background: #fff;
+      border: 1px solid #cfe5d6;
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin: 10px 0
+    }
+    summary {
+      cursor: pointer;
+      font-weight: 600
+    }
+    ul.l {
+      padding-left: 20px;
+      margin: 8px 0
+    }
+    @media(prefers-reduced-motion:reduce) {
+      * {
+        transition: none !important;
+        scroll-behavior: auto !important
+      }
+    }
+    .card p.src {
+      margin-top: 14px;
+      padding-top: 10px;
+      border-top: 1px solid #e1ece5;
+      font-size: .8rem;
+      color: var(--mut)
+    }
+    .card p.src a {
+      font-weight: 600
+    }
+    /* ===== Calculadora TCO ===== */
+    .bce-tco {
+      --bce-font: "Segoe UI", system-ui, sans-serif;
+      --bce-radius: 12px;
+      --bce-acc: #0B7A38;
+      --bce-accdark: #0d4f2e;
+      --bce-accink: #ffffff;
+      --bce-head: #10303A;
+      --bce-ink: #10303A;
+      --bce-mut: #4A6670;
+      --bce-line: #cfe5d6;
+      --bce-surf: #ffffff;
+      --bce-ph: #F0FBF3;
+      --bce-bg: transparent;
+      --bce-c1: #0B7A38;
+      --bce-c2: #36D17A;
+      --bce-c3: #2C7FB8;
+      --bce-c4: #D7E600;
+      --bce-c5: #9aa0a6;
+      font-family: var(--bce-font);
+      color: var(--bce-ink);
+      background: var(--bce-bg);
+      padding: 0;
+      line-height: 1.5;
+      box-sizing: border-box;
+    }
+    .bce-tco *, .bce-tco *::before, .bce-tco *::after {
+      box-sizing: border-box
+    }
+    .bce-tco .bce-wrap {
+      max-width: 1000px;
+      margin: 0 auto
+    }
+    .bce-tco h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0 0 6px;
+      color: var(--bce-head)
+    }
+    .bce-tco h4 {
+      font-size: 22px;
+      font-weight: 700;
+      margin: 0 0 10px;
+      color: var(--bce-head)
+    }
+    .bce-tco p {
+      margin: 0 0 10px
+    }
+    .bce-tco .bce-mut {
+      color: var(--bce-mut)
+    }
+    .bce-tco .bce-warn {
+      border-radius: 8px;
+      background: var(--bce-ph);
+      padding: 10px 14px;
+      font-size: 16px;
+      color: var(--bce-head);
+      margin: 0 0 16px
+    }
+    .bce-tco .bce-box {
+      background: var(--bce-surf);
+      border: 1px solid var(--bce-line);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(47, 28, 106, .06)
+    }
+    .bce-tco .bce-row {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      align-items: end
+    }
+    .bce-tco .bce-cols {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      margin-bottom: 16px
+    }
+    .bce-tco label {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--bce-ink)
+    }
+    .bce-tco label small {
+      font-weight: 400;
+      font-size: 15px;
+      color: var(--bce-mut);
+      line-height: 1.3
+    }
+    .bce-tco input, .bce-tco select {
+      display: block;
+      width: 100%;
+      margin: 0;
+      padding: 8px 12px;
+      font: inherit;
+      font-size: 18px;
+      font-weight: 400;
+      border: 1px solid var(--bce-line);
+      border-radius: 8px;
+      background: var(--bce-surf);
+      color: var(--bce-ink);
+      height: 50px
+    }
+    .bce-tco input:hover, .bce-tco select:hover {
+      border-color: var(--bce-c2)
+    }
+    .bce-tco input:focus, .bce-tco select:focus {
+      border-color: var(--bce-acc)
+    }
+    .bce-tco .bce-col {
+      background: var(--bce-surf);
+      border: 1px solid var(--bce-line);
+      border-top: 6px solid var(--bce-acc);
+      border-radius: 12px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 2px 8px rgba(47, 28, 106, .06)
+    }
+    .bce-tco .bce-col h4 {
+      margin: 0
+    }
+    .bce-tco .bce-net {
+      margin: 0;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: var(--bce-ph);
+      font-size: 16px;
+      color: var(--bce-head)
+    }
+    .bce-tco label[hidden] {
+      display: none
+    }
+    .bce-tco .bce-chartw {
+      position: relative
+    }
+    .bce-tco .bce-chartw svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      overflow: visible
+    }
+    .bce-tco .bce-chartw text {
+      font-family: inherit;
+      fill: var(--bce-mut);
+      font-size: 11px
+    }
+    .bce-tco .bce-chartw .bce-vl {
+      fill: var(--bce-ink);
+      font-weight: 700;
+      font-size: 12px
+    }
+    .bce-tco .bce-chartw .bce-nm {
+      fill: var(--bce-ink);
+      font-weight: 700;
+      font-size: 13px
+    }
+    .bce-tco .bce-sg {
+      cursor: pointer;
+      stroke: #fff;
+      stroke-width: 1;
+      transition: opacity .15s
+    }
+    .bce-tco .bce-chartw.bce-hv .bce-sg {
+      opacity: .38
+    }
+    .bce-tco .bce-chartw.bce-hv .bce-sg.bce-on {
+      opacity: 1;
+      stroke: var(--bce-head);
+      stroke-width: 2
+    }
+    .bce-tco .bce-sg:focus {
+      outline: none
+    }
+    .bce-tco .bce-tip {
+      position: absolute;
+      z-index: 5;
+      pointer-events: none;
+      background: var(--bce-head);
+      color: #fff;
+      border-radius: 8px;
+      padding: 9px 12px;
+      font-size: 15.5px;
+      line-height: 1.5;
+      box-shadow: 0 6px 18px rgba(47, 28, 106, .3);
+      min-width: 240px;
+      max-width: 330px;
+      left: 0;
+      top: 0
+    }
+    .bce-tco .bce-tip[hidden] {
+      display: none
+    }
+    .bce-tco .bce-tip .bce-tt {
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 4px
+    }
+    .bce-tco .bce-tip .bce-tr {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 0 6px;
+      margin: 0 -6px
+    }
+    .bce-tco .bce-tip .bce-tr.bce-th {
+      font-weight: 700;
+      background: rgba(255, 255, 255, .18);
+      border-radius: 4px
+    }
+    .bce-tco .bce-tip .bce-tr i {
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      border-radius: 2px;
+      margin-right: 6px;
+      border: 1px solid rgba(255, 255, 255, .7)
+    }
+    .bce-tco .bce-tip .bce-tr span {
+      white-space: nowrap
+    }
+    .bce-tco .bce-tip .bce-ts {
+      border-top: 1px solid rgba(255, 255, 255, .35);
+      margin-top: 5px;
+      padding-top: 5px
+    }
+    .bce-tco .bce-tip .bce-tn {
+      margin-top: 4px;
+      font-size: 15px;
+      opacity: .9
+    }
+    .bce-tco .bce-ctl {
+      display: flex;
+      gap: 10px 32px;
+      flex-wrap: wrap;
+      margin: 6px 0 4px
+    }
+    .bce-tco .bce-ctl .bce-lb {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 6px
+    }
+    .bce-tco .bce-ctl .bce-seg {
+      margin: 0
+    }
+    .bce-tco .bce-leg {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      font-size: 16px;
+      margin: 12px 0
+    }
+    .bce-tco .bce-leg span::before {
+      content: "";
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      margin-right: 6px;
+      vertical-align: -1px;
+      background: var(--c)
+    }
+    .bce-tco .bce-sum {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 6px 0 12px;
+      color: var(--bce-head)
+    }
+    .bce-tco .bce-tw {
+      overflow-x: auto
+    }
+    .bce-tco table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 17.5px;
+      min-width: 600px
+    }
+    .bce-tco caption {
+      caption-side: top;
+      text-align: left;
+      font-size: 16px;
+      color: var(--bce-mut);
+      padding: 0 0 6px
+    }
+    .bce-tco th, .bce-tco td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--bce-line);
+      text-align: right;
+      white-space: nowrap
+    }
+    .bce-tco th {
+      color: var(--bce-head);
+      font-weight: 700
+    }
+    .bce-tco th:first-child, .bce-tco td:first-child {
+      text-align: left
+    }
+    .bce-tco th.bce-c {
+      text-align: center
+    }
+    .bce-tco tr.bce-best td {
+      font-weight: 700;
+      color: var(--bce-accdark);
+      background: var(--bce-ph)
+    }
+    .bce-tco td.bce-hl {
+      font-weight: 700;
+      color: var(--bce-accdark);
+      background: var(--bce-ph)
+    }
+    .bce-tco tr.bce-sumrow td {
+      font-weight: 700;
+      border-top: 2px solid var(--bce-line)
+    }
+    .bce-tco .bce-svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      margin-top: 8px
+    }
+    .bce-tco .bce-svg text {
+      font-family: inherit;
+      fill: var(--bce-mut);
+      font-size: 11px
+    }
+    .bce-tco .bce-par {
+      margin: 6px 0 0;
+      padding-left: 20px;
+      font-size: 17.5px
+    }
+    .bce-tco .bce-seg {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin: 14px 0 0;
+      font-size: 16px
+    }
+    .bce-tco button {
+      font: inherit;
+      font-size: 17.5px;
+      font-weight: 700;
+      border: 2px solid var(--bce-acc);
+      background: transparent;
+      color: var(--bce-acc);
+      border-radius: 8px;
+      padding: 8px 18px;
+      cursor: pointer
+    }
+    .bce-tco button:hover {
+      background: var(--bce-ph)
+    }
+    .bce-tco button[aria-pressed="true"], .bce-tco .bce-primary {
+      background: var(--bce-acc);
+      border-color: var(--bce-acc);
+      color: var(--bce-accink)
+    }
+    .bce-tco .bce-primary:hover, .bce-tco button[aria-pressed="true"]:hover {
+      background: var(--bce-accdark);
+      border-color: var(--bce-accdark)
+    }
+    .bce-tco .bce-acts {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px
+    }
+    .bce-tco .bce-msg {
+      margin: 12px 0 0;
+      padding: 10px 14px;
+      border-radius: 8px;
+      background: var(--bce-ph);
+      font-size: 17.5px;
+      color: var(--bce-head)
+    }
+    .bce-tco .bce-msg[hidden] {
+      display: none
+    }
+    .bce-tco .bce-msg a {
+      color: var(--bce-accdark);
+      font-weight: 700
+    }
+    .bce-tco details {
+      border: 1px solid var(--bce-line);
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-top: 16px
+    }
+    .bce-tco summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--bce-head)
+    }
+    .bce-tco details ol {
+      margin: 10px 0 0;
+      padding-left: 20px;
+      font-size: 17.5px
+    }
+    .bce-tco details li {
+      margin-bottom: 5px
+    }
+    .bce-tco :focus-visible {
+      outline: 3px solid var(--bce-c2);
+      outline-offset: 2px
+    }
+    @media (prefers-reduced-motion:reduce) {
+      .bce-tco .bce-sg {
+        transition: none
+      }
+    }
+
+    /* ===== Infraestructura de recarga ===== */
+    .cr {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      border-radius: 12px;
+      overflow: hidden;
+      background: transparent;
+      margin-bottom: 20px;
+      transition: box-shadow .25s
+    }
+    .cr-i {
+      position: relative;
+      aspect-ratio: 16/9;
+      overflow: hidden;
+      background: transparent
+    }
+    .cr-i img, .cr-ph {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .5s
+    }
+    .cr-ph {
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 16px;
+      color: #fff;
+      background: linear-gradient(135deg, #0B7A38, #36D17A)
+    }
+    .cr-p {
+      padding: 24px;
+      display: flex;
+      flex-direction: column
+    }
+    .cr-p h3 {
+      font-size: 1.3rem;
+      margin: 0 0 12px
+    }
+    .cr-x {
+      opacity: 0;
+      transition: opacity .3s
+    }
+    .cr-x p {
+      margin: 0 0 12px;
+      color: var(--mut);
+      font-size: .95rem
+    }
+    .cr-x p.src {
+      font-size: .8rem
+    }
+    .cr-b {
+      display: inline-block;
+      background: var(--g);
+      color: #fff;
+      font: inherit;
+      font-weight: 600;
+      font-size: .9rem;
+      padding: 10px 18px;
+      border: 0;
+      border-radius: 999px;
+      cursor: pointer
+    }
+    .cr-b:focus-visible {
+      outline: 3px solid var(--ink);
+      outline-offset: 2px
+    }
+    .cr-l {
+      list-style: none;
+      margin: 12px 0 0;
+      padding: 0
+    }
+    .cr-l li {
+      margin: 0 0 6px;
+      font-size: .9rem
+    }
+    .cr:hover, .cr.open, .cr:has(:focus-visible) {
+      box-shadow: 0 12px 28px rgba(16, 48, 58, .15)
+    }
+    .cr:hover .cr-x, .cr.open .cr-x, .cr:has(:focus-visible) .cr-x {
+      opacity: 1
+    }
+    .cr:hover .cr-i img, .cr:hover .cr-ph, .cr.open .cr-i img, .cr.open .cr-ph {
+      transform: scale(1.05)
+    }
+    @media(hover:none), (max-width:760px) {
+      .cr-x {
+        opacity: 1
+      }
+    }
+    .cr:nth-child(even) {
+      grid-template-columns: 1fr 2fr
+    }
+    .cr:nth-child(even) .cr-i {
+      order: 2
+    }
+    @media(max-width:760px) {
+      .cr, .cr:nth-child(even) {
+        grid-template-columns: 1fr
+      }
+      .cr:nth-child(even) .cr-i {
+        order: 0
+      }
+    }
+    .vsrc {
+      margin: 10px 0 0;
+      font-size: .85rem;
+      color: var(--mut)
+    }
+    .vsrc a {
+      font-weight: 600
+    }
+    /* ===== Ruta de 5 pasos (navegación lateral) ===== */
+    .vs {
+      display: grid;
+      grid-template-columns: 350px 1fr;
+      gap: 28px;
+      align-items: start
+    }
+    .vs-tabs {
+      display: flex;
+      flex-direction: column;
+      gap: 12px
+    }
+    .vs-t {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid #cfe5d6;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+      transition: background .25s, border-color .25s, transform .25s, box-shadow .25s
+    }
+    .vs-t:hover {
+      border-color: var(--g);
+      background: var(--bg)
+    }
+    .vs-t:focus-visible {
+      outline: 3px solid var(--ink);
+      outline-offset: 2px
+    }
+    .vs-t[aria-selected=true] {
+      background: var(--g);
+      border-color: var(--g);
+      color: #fff;
+      transform: translateX(4px);
+      box-shadow: 0 6px 16px rgba(11, 122, 56, .25)
+    }
+    .vs-n {
+      flex: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: .9rem;
+      background: var(--bg);
+      color: var(--g)
+    }
+    .vs-t[aria-selected=true] .vs-n {
+      background: rgba(255, 255, 255, .22);
+      color: #fff
+    }
+    .vs-i {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.3
+    }
+    .vs-i small {
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      opacity: .8
+    }
+    .vs-i b {
+      font-size: .95rem
+    }
+    .vs-panel {
+      background: #fff;
+      border: 1px solid #cfe5d6;
+      border-radius: 12px;
+      padding: 28px;
+      min-height: 420px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 20px
+    }
+    .vs-p {
+      animation: vsf .35s ease
+    }
+    @keyframes vsf {
+      from {
+        opacity: 0;
+        transform: translateY(8px)
+      }
+      to {
+        opacity: 1;
+        transform: none
+      }
+    }
+    .vs-f {
+      position: relative;
+      margin: 0 0 20px;
+      aspect-ratio: 7/3;
+      border-radius: 12px;
+      overflow: hidden
+    }
+    .vs-f img, .vs-ph {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover
+    }
+    .vs-ph {
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 12px;
+      color: var(--mut);
+      background: var(--bg2);
+      border: 2px dashed var(--g3);
+      border-radius: 12px;
+      font-size: .9rem
+    }
+    .vs-b {
+      display: inline-block;
+      background: var(--bg);
+      color: var(--g);
+      font-weight: 700;
+      font-size: .78rem;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 10px
+    }
+    .vs-p h3 {
+      font-size: 1.45rem;
+      margin: 0 0 10px
+    }
+    .vs-p p {
+      margin: 0;
+      color: var(--mut)
+    }
+    .vs-s {
+      padding-top: 16px;
+      border-top: 1px dashed #cfe5d6
+    }
+    .vs-st {
+      font-size: .8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--mut);
+      margin-bottom: 8px
+    }
+    .vs-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px
+    }
+    .vs-tag {
+      display: inline-block;
+      background: #fff;
+      border: 1px solid #cfe5d6;
+      border-radius: 6px;
+      padding: 5px 12px;
+      font-size: .85rem;
+      color: var(--g);
+      text-decoration: none
+    }
+    a.vs-tag:hover {
+      background: var(--bg);
+      border-color: var(--g)
+    }
+    span.vs-tag {
+      color: var(--mut)
+    }
+    @media(prefers-reduced-motion:reduce) {
+      .vs-p {
+        animation: none
+      }
+      .vs-t[aria-selected=true] {
+        transform: none
+      }
+    }
+    @media(max-width:820px) {
+      .vs {
+        grid-template-columns: 1fr
+      }
+      .vs-tabs {
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: 6px
+      }
+      .vs-t {
+        flex: none;
+        min-width: 250px
+      }
+      .vs-t[aria-selected=true] {
+        transform: none
+      }
+      .vs-panel {
+        padding: 20px;
+        min-height: 0
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="w nav">
+      <a class="logo" href="#inicio" style="display:flex;flex-direction:row;flex-wrap:nowrap;align-items:center;gap:10px">
+        <img src="src/BC_Logo2.png" alt="Breathe Cities" style="display:block;height:50px;width:auto;flex:none">
+        <img src="src/TERE-05.png" alt="Transporte escolar electrificado (TERE)" style="display:block;height:20px;width:auto;flex:none">
+      </a>
+      <button id="mb" aria-expanded="false" aria-controls="menu">Menú</button>
+      <nav id="menu" aria-label="Principal">
+        <ul>
+          <li><a href="#inicio">Inicio</a></li>
+          <li class="sub"><a href="#porque">¿Por qué electrificar?</a>
+            <ul class="drop">
+              <li><a href="#porque-viaje">La experiencia de viaje al colegio</a></li>
+              <li><a href="#porque-salud">La salud infantil</a></li>
+              <li><a href="#porque-economia">Beneficios económicos</a></li>
+            </ul>
+          </li>
+          <li><a href="#casos">Experiencias</a></li>
+          <li><a href="#ruta">Tu plan</a></li>
+          <li><a href="#recarga">Recarga</a></li>
+          <li><a href="#costos">Costos</a></li>
+          <li><a href="#mitos">Mitos</a></li>
+          <li><a href="#recursos">Recursos</a></li>
+          <li><a href="#colombia">Colombia</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="hero hh" id="inicio" style="min-height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; box-sizing: border-box; padding: 2rem 1rem;">
+      <img src="hero.webp" alt="Bus escolar eléctrico cargando en un punto de recarga frente a un colegio de ladrillo" width="1600" height="893" fetchpriority="high">
+      <div class="w">
+        <h1>¿Puede tu colegio tener buses escolares eléctricos?</h1>
+        <p>Experiencias, herramientas y pasos prácticos para empezar a planear un transporte escolar descontaminado, saludable y eficiente en Bogotá.</p>
+        <a class="btn" href="#ruta">Empieza tu ruta</a>
+      </div>
+    </section>
+
+    <section id="porque">
+      <div class="w">
+        <h2>¿Por qué cambiar a flotas de buses eléctricos?</h2>
+        <p id="porque-viaje">Los buses escolares son esenciales para garantizar el acceso a la educación, pero hay riesgos que pueden pasar inadvertidos.</p>
+        <div class="grid" data-s="porque"></div>
+        <p></p>
+        <p> Más allá de la teoría, mira los resultados de la prueba piloto en buses escolares eléctricos en Bogotá.</p>
+        <iframe title="vimeo-player" src="https://player.vimeo.com/video/1196134886?h=ba1765bb89" style="width: 100%; aspect-ratio: 16 / 9; height: auto; border: 0; display: block;" frameborder="0" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen></iframe>
+        <p class="vsrc">Fuente: <a href="https://epigrama.co/tere-estrategia-de-comunicacion-para-la-electrificacion-del-transporte-escolar/" target="_blank" rel="noopener">Relatos lúdicos y pedagógicos sobre movilidad limpia, Epigrama estudios</a></p>
+        <h2 id="porque-salud" style="margin-top:48px">Las niñas y los niños, los más vulnerables ante los entornos contaminados</h2>
+
+        <div class="two">
+          <img src="Kids_health1.jpg" alt="Niño viajando en un bus escolar eléctrico" width="600" height="600">
+          <div class="grid" style="grid-template-columns:1fr" data-s="salud"></div>
+        </div>
+        <div data-q></div>
+        <!-- <p><small>Evidencia asociativa, no causal. Fuentes:</small> <span data-s="evidencia" data-inline></span></p> -->
+        <h2 id="porque-economia" style="margin-top:48px">Beneficios económicos para la implementación de buses escolares eléctricos</h2>
+        <p class="lead">Colombia ofrece beneficios para reducir los costos de compra y operación de buses eléctricos.</p>
+        <div class="grid" data-s="incentivos"></div>
+        <p><a class="btn g" href="#costos">Explora tu caso con el Costo Total de Propiedad</a></p>
+        <h3 style="margin-top:48px">Colombia vs EEUU</h3>
+        <div class="grid" data-s="cifra"></div>
+      </div>
+    </section>
+
+    <section class="alt" id="casos">
+      <div class="w">
+        <h2>Colegios y empresas que ya dieron el primer paso</h2>
+        <p class="lead">Conoce los vehículos, sus experiencias y el cambio que han logrado.</p>
+        <div class="tabs" id="filtro">
+          <button aria-pressed="true" data-f="">Todos</button>
+          <button aria-pressed="false" data-f="Nacional">Casos nacionales</button>
+          <button aria-pressed="false" data-f="Internacional">Casos internacionales</button>
+        </div>
+        <div class="grid" id="casosg">
+        </div>
+      </div>
+    </section>
+
+    <section id="ruta">
+      <div class="w">
+        <h2>Tu ruta de 5 pasos</h2>
+        <p class="lead">¿Cómo inicio la planeación de mi sistema? Elige tu perfil.</p>
+        <div class="tabs" id="perfil"></div>
+        <div class="vs">
+          <div class="vs-tabs" id="vstabs" role="tablist" aria-label="Pasos de la ruta"></div>
+          <div class="vs-panel" id="vspanel" role="tabpanel" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="alt" id="recarga">
+      <div class="w">
+        <h2>Infraestructura de recarga</h2>
+        <p class="lead">Aprende sobre las alternativas para recargar tu vehículo eléctrico.</p>
+        <p style="color:var(--mut);font-size:.95rem">Pasa el cursor sobre cada opción para ver la explicación y abrir los recursos de consulta.</p>
+        <div id="cargag"></div>
+      </div>
+    </section>
+
+    <section id="costos">
+      <div class="w">
+        <h2>Estima y compara costos mediante la herramienta de Costo Total de Propiedad (TCO)</h2>
+        <p class="lead">El costo total de propiedad suma los costos de inversión, operación y mantenimiento, financiación e incentivos durante toda la vida útil del bus para comparar la inversión total al finalizar la vida útil del vehículo. Aunque no se alcance la paridad, permite identificar bajo qué parámetros la operación de un bus escolar es más económica que sus contrapartes a combustión interna</p>
+        <h3 style="margin-top:40px"> Sobre el costo total de propiedad (TCO) </h3>
+        <div class="grid" data-s="tco"></div>
+        <h3 style="margin-top:40px">Los nuevos modelos de negocio y su apliación en el TCO </h3>
+        <div class="grid" data-s="modelo"></div>
+
+        <div class="bce-tco" id="calculadora-tco" role="region" aria-labelledby="bce-tco-t">
+          <div class="bce-wrap">
+            <h3 id="bce-tco-t">Calcula el costo total de propiedad (TCO)</h3>
+            <p class="bce-mut">Compara diésel y eléctrico para tu operación. Cambia los valores y las gráficas se actualizan.</p>
+            <p class="bce-warn">Los valores precargados son ejemplos ilustrativos, no datos reales. Reemplázalos con cotizaciones, precios y beneficios de tu operación.</p>
+            <p class="bce-msg" id="bce-err" role="alert" hidden></p>
+            <div id="bce-app">
+
+              <div class="bce-box">
+                <h4>1. Tu operación</h4>
+                <div class="bce-row">
+                  <label>
+                    <span>Tipología del vehículo</span>
+                    <select id="bce-tipo"></select>
+                    <small>Tipo de vehículo</small>
+                  </label>
+                  <label>
+                    <span>Infraestructura de recarga</span>
+                    <select id="bce-infra">
+                      <option value="none">Carga como servicio (con empresa externa)</option>
+                      <option value="own" selected>Inversión en infraestructura de recarga propia</option>
+                    </select>
+                    <small>Inversión en el punto de carga eléctrica</small>
+                  </label>
+                  <label>
+                    <span>Recorrido diario</span>
+                    <input type="number" min="1" max="600" step="1" data-g="km">
+                    <small>km/día</small>
+                  </label>
+                  <label>
+                    <span>Días de operación</span>
+                    <input type="number" min="1" max="365" step="1" data-g="dias">
+                    <small>días/año (máx. 365)</small>
+                  </label>
+                  <label>
+                    <span>Vida útil analizada</span>
+                    <input type="number" min="1" max="16" step="1" data-g="vida">
+                    <small>años (máx. 16)</small>
+                  </label>
+                </div>
+              </div>
+
+              <div class="bce-box">
+                <h4>2. Crédito y tasa de descuento</h4>
+                <div class="bce-row">
+                  <label>
+                    <span>Porcentaje financiado</span>
+                    <input type="number" min="0" max="100" step="0.5" data-g="fin">
+                    <small>% del precio neto (máx. 100 %)</small>
+                  </label>
+                  <label>
+                    <span>Tasa del crédito: diésel</span>
+                    <input type="number" min="8" max="20" step="0.1" data-g="tcI">
+                    <small>Diésel · % anual (8 a 20 %)</small>
+                  </label>
+                  <label>
+                    <span>Tasa del crédito: eléctricos</span>
+                    <input type="number" min="8" max="20" step="0.1" data-g="tcE">
+                    <small>Eléctricos · % anual (8 a 20 %)</small>
+                  </label>
+                  <label>
+                    <span>Plazo del crédito</span>
+                    <input type="number" min="1" max="16" step="1" data-g="plazo">
+                    <small>años (1 a 16; máx. = vida útil)</small>
+                  </label>
+                  <label>
+                    <span>Tasa de descuento</span>
+                    <input type="number" min="0" max="30" step="0.1" data-g="td">
+                    <small>% anual (0 a 30 %)</small>
+                  </label>
+                </div>
+              </div>
+
+              <div class="bce-box">
+                <h4>3. Escenario de inflación de la energía</h4>
+                <p class="bce-mut" style="font-size:16px">Elige un escenario para cada tecnología por separado (por ejemplo, alto en diésel y medio en electricidad) o aplica el mismo a todas.</p>
+                <div class="bce-row" id="bce-ss"></div>
+                <div class="bce-seg" role="group" aria-label="Aplicar el mismo escenario a todas">
+                  <span>Aplicar a todas:</span>
+                  <button type="button" data-s="bajo" aria-pressed="false">Bajo</button>
+                  <button type="button" data-s="medio" aria-pressed="true">Medio</button>
+                  <button type="button" data-s="alto" aria-pressed="false">Alto</button>
+                </div>
+                <div class="bce-tw" style="margin-top:14px">
+                  <table id="bce-rates"></table>
+                </div>
+                <p class="bce-mut" style="font-size:16px;margin:8px 0 0">Puedes ajustar el porcentaje de cada tecnología en su columna (paso 4); el escenario pasa a «Personalizado».</p>
+              </div>
+
+              <h4>4. Datos por tecnología</h4>
+              <div class="bce-cols" id="bce-cols"></div>
+
+              <div class="bce-box">
+                <h4>Resultado: TCO en valor presente</h4>
+                <p class="bce-sum" id="bce-sum" role="status"></p>
+                <div class="bce-ctl">
+                  <div>
+                    <div class="bce-lb">Categorías incluidas</div>
+                    <div class="bce-seg" role="group" aria-label="Filtrar la gráfica de barras por categoría">
+                      <button type="button" data-bc="c" aria-pressed="true">CAPEX</button>
+                      <button type="button" data-bc="o" aria-pressed="true">OPEX</button>
+                      <button type="button" data-bc="f" aria-pressed="true">FINEX</button>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="bce-lb">Vista</div>
+                    <div class="bce-seg" role="group" aria-label="Elegir la vista de la gráfica de barras">
+                      <button type="button" data-bv="tech" aria-pressed="true">Por tecnología</button>
+                      <button type="button" data-bv="rubro" aria-pressed="false">Valor por rubro</button>
+                    </div>
+                  </div>
+                </div>
+                <p class="bce-mut" style="font-size:16px;margin:4px 0 0" id="bce-bcap"></p>
+                <div class="bce-chartw" id="bce-chartw">
+                  <div id="bce-chart" role="group" aria-label="Gráfica de barras de TCO por tecnología"></div>
+                  <div class="bce-tip" id="bce-tip" role="status" hidden></div>
+                </div>
+                <div class="bce-leg" id="bce-bleg"></div>
+                <div class="bce-tw">
+                  <table id="bce-tbl"></table>
+                </div>
+                <h4 style="margin-top:20px">TCO por escenario de inflación y por tecnología</h4>
+                <div class="bce-tw">
+                  <table id="bce-sens"></table>
+                </div>
+                <p class="bce-mut" style="font-size:16px;margin-top:8px">Resaltado: el escenario elegido para cada tecnología.</p>
+              </div>
+
+              <div class="bce-box">
+                <h4>Flujo de caja acumulado por año y paridad</h4>
+                <div class="bce-row" style="grid-template-columns:minmax(220px,320px) 1fr">
+                  <label>
+                    <span>Ver flujo en</span>
+                    <select id="bce-modo">
+                      <option value="pv">Valor presente (descontado)</option>
+                      <option value="nom">Valores nominales</option>
+                    </select>
+                    <small>Millones de pesos (M COP)</small>
+                  </label>
+                  <div>
+                    <div style="font-size:16px;font-weight:700;margin-bottom:6px">Categorías incluidas</div>
+                    <div class="bce-seg" style="margin:0" role="group" aria-label="Filtrar por categoría">
+                      <button type="button" data-cat="c" aria-pressed="true">CAPEX</button>
+                      <button type="button" data-cat="o" aria-pressed="true">OPEX</button>
+                      <button type="button" data-cat="f" aria-pressed="true">FINEX</button>
+                    </div>
+                    <small class="bce-mut" style="font-size:15px">CAPEX: inversión · OPEX: operación · FINEX: financiamiento</small>
+                  </div>
+                </div>
+                <div id="bce-line" role="img" aria-label="Flujo de caja acumulado por tecnología"></div>
+                <div class="bce-leg" id="bce-lleg"></div>
+                <ul class="bce-par" id="bce-par"></ul>
+                <details open>
+                  <summary>Costo anual por año y categoría (M COP)</summary>
+                  <div class="bce-tw" style="margin-top:10px">
+                    <table id="bce-ann"></table>
+                  </div>
+                </details>
+              </div>
+
+              <div class="bce-box">
+                <details open style="margin-top:0">
+                  <summary>Supuestos del cálculo</summary>
+                  <ol id="bce-assume"></ol>
+                </details>
+                <div class="bce-acts">
+                  <button type="button" class="bce-primary" id="bce-rep">Descargar reporte (PDF)</button>
+                  <button type="button" id="bce-reset">Restablecer valores de la tipología</button>
+                </div>
+                <p class="bce-msg" id="bce-repmsg" role="status" hidden></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="alt" id="mitos">
+      <div class="w">
+        <h2>Mitos y preguntas sobre la movilidad eléctrica</h2>
+        <div id="mitosg"></div>
+      </div>
+    </section>
+
+    <section id="recursos">
+      <div class="w">
+        <h2>Herramientas y recursos</h2>
+        <div class="grid" data-s="recurso"></div>
+      </div>
+    </section>
+
+    <section class="alt" id="colombia">
+      <div class="w">
+        <h2>Colombia ya se está electrificando</h2>
+        <div class="grid" data-s="colombia"></div>
+        <h3 style="margin-top:48px">El transporte escolar aún va despacio</h3>
+        <div id="brecha" role="img" aria-label="Comparación de buses eléctricos entre transporte público y especial"></div>
+        <p class="lead">La brecha es una oportunidad para que colegios y operadores marquen el paso.</p>
+        <p><small class="pend">[PENDIENTE: gráfica de matrículas 2024–2026]</small></p>
+      </div>
+    </section>
+
+  </main>
+  <footer>
+    <div class="w">
+      <p id="pie"></p>
+      <p>Logos: WRI · Breathe Cities · Clean Air Fund · C40 · ESBI
+        <small class="pend">[PENDIENTE: archivos de logos]</small>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    const $ = s => document.querySelector(s),
+      E = s => String(s ?? "").replace(/[&<>"]/g, c => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;"
+      }[c]));
+    const P = t => E(t).replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g, (m, x, u) => `<a href="${u}" target="_blank" rel="noopener">${x}</a>`).replace(/\[(PENDIENTE|VERIFICAR)[^\]]*\]/g, m => `<span class="pend">${m}</span>`);
+
+    function parse(t) {
+      const r = [];
+      let row = [],
+        f = "",
+        q = 0;
+      t = t.replace(/^\uFEFF/, "");
+      for (let i = 0; i < t.length; i++) {
+        const c = t[i];
+        if (q) {
+          if (c == '"') {
+            if (t[i + 1] == '"') {
+              f += '"';
+              i++
+            } else q = 0
+          } else f += c
+        } else if (c == '"') q = 1;
+        else if (c == ",") {
+          row.push(f);
+          f = ""
+        } else if (c == "\n" || c == "\r") {
+          if (c == "\r" && t[i + 1] == "\n") i++;
+          row.push(f);
+          r.push(row);
+          row = [];
+          f = ""
+        } else f += c
+      }
+      if (f || row.length) {
+        row.push(f);
+        r.push(row)
+      }
+      const h = r.shift();
+      return r.filter(x => x.length > 1).map(x => Object.fromEntries(h.map((k, i) => [k, x[i] || ""])))
+    }
+    const host = u => {
+      try {
+        return new URL(u).hostname.replace(/^www\./, "")
+      } catch (e) {
+        return u
+      }
+    };
+    /* Fuente: usa fuente/url_fuente; si no hay fuente pero sí url (caso TCO y modelos de negocio), muestra el enlace con el nombre del sitio */
+    const src = (r, useUrl) => {
+      const u = r.url_fuente || (useUrl ? r.url : "");
+      if (r.fuente) return `<p class="src">Fuente: ${u?`<a href="${E(u)}" target="_blank" rel="noopener">${P(r.fuente)}</a>`:P(r.fuente)}</p>`;
+      if (u) return `<p class="src">Fuente: <a href="${E(u)}" target="_blank" rel="noopener">${E(host(u))}</a></p>`;
+      return ""
+    };
+    const link = (r, t) => r.url ? `<a href="${E(r.url)}" target="_blank" rel="noopener">${E(t||r.titulo)}</a>` : E(t || r.titulo);
+
+    function start(D) {
+      const S = s => D.filter(r => r.seccion == s);
+      document.querySelectorAll("[data-s]").forEach(el => {
+        const s = el.dataset.s,
+          rows = S(s);
+        if (el.hasAttribute("data-inline")) {
+          el.innerHTML = rows.map(r => link(r) + (r.texto ? ` <span class="pend">${E(r.texto)}</span>` : "")).join(" · ");
+          return
+        }
+        el.innerHTML = rows.map(r => {
+          const big = ["colombia", "cifra"].includes(s);
+          return `<div class="card">${big?`<div class="big">${P(r.titulo)}</div>`:`<h3>${s=="recurso"?link(r):P(r.titulo)}</h3>`}<p>${P(r.texto)}</p>${src(r,s!="recurso")}</div>`
+        }).join("")
+      });
+      const q = S("cita")[0];
+      if (q) $("[data-q]").innerHTML = `<blockquote>${P(q.titulo)}<br><small>${P(q.texto)}${q.fuente?"Fuente: "+(q.url_fuente?`<a href="${E(q.url_fuente)}" target="_blank" rel="noopener">${P(q.fuente)}</a>`:P(q.fuente)):""}</small></blockquote>`;
+      const B = S("brecha"),
+        mx = Math.max(...B.map(r => +r.texto));
+      $("#brecha").innerHTML = B.map(r => `<div class="bar"><span>${E(r.titulo)}</span><i data-w="${+r.texto/mx*100}"></i><b>${E(r.url)}</b></div>`).join("");
+      const io = new IntersectionObserver(e => e.forEach(x => {
+        if (x.isIntersecting) x.target.querySelectorAll("i").forEach(i => i.style.width = i.dataset.w + "%")
+      }));
+      io.observe($("#brecha"));
+      const C = S("caso"),
+        draw = f => $("#casosg").innerHTML = C.filter(r => !f || r.grupo == f).map(r => `<div class="card">
+  ${r.imagen ? `<div class="ph" style="min-height:110px;margin-bottom:10px"><img src="${E(r.imagen)}" alt="${E(r.alt || "")}" loading="lazy" style="max-width:100%;max-height:200px;width:auto;height:auto;object-fit:contain;display:inline-block"></div>` : ""}
+  <h3>${E(r.titulo)}</h3>
+  <p>${P(r.texto)}</p>
+  ${src(r)}
+</div>`).join("");
+      document.querySelectorAll("#filtro button").forEach(b => b.onclick = () => {
+        document.querySelectorAll("#filtro button").forEach(x => x.setAttribute("aria-pressed", x == b));
+        draw(b.dataset.f)
+      });
+      draw(document.querySelector("#filtro button[aria-pressed=true]")?.dataset.f || "");
+      const R = S("ruta"),
+        pf = [...new Set(R.map(r => r.grupo))];
+      let cur = [];
+      const tags = r => {
+        const n = (r.fuente || "").split("|").map(x => x.trim()).filter(Boolean),
+          u = (r.url_fuente || "").split("|").map(x => x.trim()),
+          a = [];
+        if (r.url) a.push(`<a class="vs-tag" href="${E(r.url)}" target="_blank" rel="noopener">Ir al recurso ↗</a>`);
+        n.forEach((f, i) => a.push(u[i] ? `<a class="vs-tag" href="${E(u[i])}" target="_blank" rel="noopener">${E(f)} ↗</a>` : `<span class="vs-tag">${P(f)}</span>`));
+        return a.join("")
+      };
+      const step = i => {
+          const r = cur[i],
+            tg = tags(r);
+          document.querySelectorAll("#vstabs .vs-t").forEach((b, k) => {
+            b.setAttribute("aria-selected", k == i);
+            b.tabIndex = k == i ? 0 : -1
+          });
+          $("#vspanel").setAttribute("aria-labelledby", "vt" + i);
+          $("#vspanel").innerHTML = `<div class="vs-p"><figure class="vs-f">${r.imagen?`<img src="${E(r.imagen)}" alt="${E(r.alt||"")}" width="1400" height="600" loading="lazy">`:`<span class="vs-ph">[imagen 7:3]</span>`}</figure><span class="vs-b">Paso ${i+1} de ${cur.length}</span><h3>${E(r.titulo)}</h3><p>${P(r.texto)}</p></div>${tg?`<div class="vs-s"><div class="vs-st">Fuentes y recursos</div><div class="vs-tags">${tg}</div></div>`:""}`;
+          document.querySelectorAll("#vspanel img").forEach(m => m.onerror = () => {
+            const d = document.createElement("span");
+            d.className = "vs-ph";
+            d.textContent = "Imagen no encontrada: " + m.getAttribute("src");
+            m.replaceWith(d)
+          })
+        },
+        show = p => {
+          cur = R.filter(r => r.grupo == p && r.titulo);
+          $("#vstabs").innerHTML = cur.map((x, k) => `<button class="vs-t" role="tab" id="vt${k}" aria-controls="vspanel" data-i="${k}"><span class="vs-n">${k+1}</span><span class="vs-i"><small>Paso ${String(k+1).padStart(2,"0")}</small><b>${E(x.titulo)}</b></span></button>`).join("");
+          document.querySelectorAll("#vstabs .vs-t").forEach((b, k, all) => {
+            b.onclick = () => step(k);
+            b.onkeydown = e => {
+              const m = {
+                ArrowDown: k + 1,
+                ArrowRight: k + 1,
+                ArrowUp: k - 1,
+                ArrowLeft: k - 1,
+                Home: 0,
+                End: all.length - 1
+              }[e.key];
+              if (m == null) return;
+              e.preventDefault();
+              const n = (m + all.length) % all.length;
+              step(n);
+              all[n].focus()
+            }
+          });
+          step(0);
+          document.querySelectorAll("#perfil button").forEach(b => b.setAttribute("aria-pressed", b.textContent == p))
+        };
+      $("#perfil").innerHTML = pf.map(p => `<button>${E(p)}</button>`).join("");
+      document.querySelectorAll("#perfil button").forEach(b => b.onclick = () => show(b.textContent));
+      show(pf[0]);
+      $("#cargag").innerHTML = S("carga").map((r, i) => {
+        const ls = S("carga_link").filter(l => l.grupo == r.titulo);
+        return `<article class="cr"><div class="cr-i">${r.imagen?`<img src="${E(r.imagen)}" alt="${E(r.alt||"")}" width="1200" height="675" loading="lazy">`:`<span class="cr-ph">[imagen 16:9]</span>`}</div><div class="cr-p"><h3>${E(r.titulo)}</h3><div class="cr-x"><p>${P(r.texto)}</p>${src(r)}<button class="cr-b" type="button" aria-expanded="false" aria-controls="cl${i}">Ver recursos de consulta (${ls.length}) ▾</button><ul class="cr-l" id="cl${i}" hidden>${ls.map(l=>`<li>${link(l)}</li>`).join("")||"<li>Sin recursos aún</li>"}</ul></div></div></article>`
+      }).join("");
+      document.querySelectorAll("#cargag img").forEach(i => i.onerror = () => {
+        const d = document.createElement("span");
+        d.className = "cr-ph";
+        d.textContent = "Imagen no encontrada: " + i.getAttribute("src");
+        i.replaceWith(d)
+      });
+      document.querySelectorAll(".cr-b").forEach(b => b.onclick = () => {
+        const l = $("#" + b.getAttribute("aria-controls")),
+          o = l.hidden;
+        l.hidden = !o;
+        b.setAttribute("aria-expanded", o);
+        b.closest(".cr").classList.toggle("open", o)
+      });
+      $("#mitosg").innerHTML = S("mito").map(r => `<details><summary>${E(r.titulo)}</summary><p>${E(r.texto)}</p></details>`).join("");
+      $("#pie").innerHTML = S("pie").map(r => P(r.titulo) + " " + P(r.texto)).join("")
+    }
+    $("#mb").onclick = e => {
+      const o = $("#menu").classList.toggle("open");
+      e.target.setAttribute("aria-expanded", o)
+    };
+    document.querySelectorAll("nav a").forEach(a => a.onclick = () => $("#menu").classList.remove("open"));
+    fetch("contenido.csv").then(r => r.ok ? r.text() : Promise.reject()).then(t => start(parse(t)), () => {
+      document.querySelector("main").insertAdjacentHTML("afterbegin", '<p role="alert" style="margin:0;padding:12px 20px;background:#D7E600;color:#10303A;text-align:center">No se pudo cargar contenido.csv. Abre el sitio desde un servidor web (no con doble clic) y verifica que el archivo esté en la misma carpeta que index.html.</p>')
+    });
+  </script>
+  <script>
+    (function() {
+      var root = document.querySelector('.bce-tco');
+      if (!root) return;
+
+      /* Los datos (vehículos, valores por defecto, límites y escenarios de inflación) se cargan desde
+         tco_parametros.csv al iniciar. Aquí solo se declaran los contenedores. */
+      var PRESETS = {},
+        DEFAULTS = {};
+      var SCEN = {
+        bajo: {},
+        medio: {},
+        alto: {}
+      };
+      var SCEN_N = {
+        bajo: 'Bajo',
+        medio: 'Medio',
+        alto: 'Alto',
+        custom: 'Personalizado'
+      };
+      /* Supuestos mostrados en pantalla y en el reporte: edítalos si cambia la metodología */
+      var ASSUME = [
+        'Cifras en pesos colombianos (COP) nominales; las tablas y gráficas muestran millones de pesos (M COP), llevados a valor presente con la tasa de descuento ingresada (salvo que se elija la vista nominal en el flujo de caja).',
+        'La comparación se limita a dos tecnologías: diésel y eléctrico. El gas natural (GNV) no se modela.',
+        'Los precios de energía ingresados rigen en el año 1 y aumentan cada año (desde el año 2) según la inflación de cada tecnología; cada tecnología puede tener un escenario distinto.',
+        'El precio de lista de los vehículos, la inversión en estaciones y el mantenimiento (COP/km) se mantienen constantes, sin inflación.',
+        'El descuento por IVA (UPME) se expresa como porcentaje del precio de lista y se resta del precio de compra. No se considera descuento por arancel ni otros efectos tributarios.',
+        'Operación constante: mismos km/día y días de operación todos los años; sin degradación de baterías ni pérdida de rendimiento.',
+        'Crédito con tasa fija y cuotas anuales iguales sobre el precio neto del descuento de IVA; la tasa es una para eléctricos y otra para diésel.',
+        'La inversión en estación (tanque y surtidor de diésel o carga eléctrica) es un costo único por vehículo en el año 0, solo con infraestructura propia; no incluye operación de la estación ni reventa.',
+        'El valor residual es un porcentaje del precio de lista y se recibe al final de la vida útil.',
+        'CAPEX = precio neto del descuento de IVA + estaciones − valor residual. OPEX = energía + mantenimiento. FINEX = desembolso del crédito (negativo, año 0) + cuotas. TCO = CAPEX + OPEX + FINEX.',
+        'En la gráfica de barras, los filtros CAPEX, OPEX y FINEX suman solo las categorías seleccionadas, a valor presente. Un FINEX negativo se dibuja bajo el eje y el total mostrado es el neto.',
+        'La paridad es el momento en que el flujo de caja acumulado de la tecnología de mayor costo inicial iguala al de la otra, con las categorías seleccionadas; el año se interpola linealmente.',
+        'No incluye otros incentivos, impuestos, seguros, reemplazo de baterías ni renting.',
+        'Los escenarios de inflación, los beneficios y los datos precargados son ejemplos ilustrativos, no datos reales.',
+        'El costo por km es el TCO dividido entre los km totales de la vida útil (sin descontar los km).'
+      ];
+      /* ======================================================================= */
+
+      var TECH = [{
+        k: 'd',
+        n: 'Diésel',
+        eu: 'COP/galón',
+        ru: 'km/galón',
+        col: '#10303A',
+        st: 'Inversión en estación de diésel'
+      }, {
+        k: 'x',
+        n: 'Eléctrico',
+        eu: 'COP/kWh',
+        ru: 'km/kWh',
+        col: '#2C7FB8',
+        st: 'Inversión en infraestructura de carga'
+      }];
+      /* Rubros de la gráfica de barras: c = categoría (c CAPEX, o OPEX, f FINEX), k = campo del resultado de calc() */
+      var RUB = [{
+        k: 'veh',
+        c: 'c',
+        cn: 'CAPEX',
+        n: 'Vehículo',
+        col: '#0B7A38',
+        tc: '#ffffff'
+      }, {
+        k: 'sta',
+        c: 'c',
+        cn: 'CAPEX',
+        n: 'Estación',
+        col: '#36D17A',
+        tc: '#10303A'
+      }, {
+        k: 'en',
+        c: 'o',
+        cn: 'OPEX',
+        n: 'Energía',
+        col: '#7DBBE0',
+        tc: '#10303A'
+      }, {
+        k: 'ma',
+        c: 'o',
+        cn: 'OPEX',
+        n: 'Mantenimiento',
+        col: '#D7E600',
+        tc: '#10303A'
+      }, {
+        k: 'fin',
+        c: 'f',
+        cn: 'FINEX',
+        n: 'Financiamiento',
+        col: '#9aa0a6',
+        tc: '#10303A'
+      }];
+      var bf = {
+          c: true,
+          o: true,
+          f: true
+        },
+        bv = 'tech',
+        lastBars = null;
+      var CAT = [{
+          k: 'c',
+          n: 'CAPEX'
+        }, {
+          k: 'o',
+          n: 'OPEX'
+        }, {
+          k: 'f',
+          n: 'FINEX'
+        }],
+        fl = {
+          c: true,
+          o: true,
+          f: true
+        };
+      var cs = {
+          d: 'medio',
+          x: 'medio'
+        },
+        last = null,
+        lastUrl = null;
+      var $ = function(s) {
+        return root.querySelector(s)
+      };
+      var fmtN = function(v, d) {
+        return v.toLocaleString('es-CO', {
+          maximumFractionDigits: d || 0
+        })
+      };
+      var fM = function(v) {
+        return fmtN(v / 1e6, 0)
+      };
+      /* Pesos con puntos para miles y apóstrofe para millones: 1.150'000.000 */
+      function sep(n) {
+        var s = String(Math.round(Math.abs(n))),
+          g = [],
+          o, i, k = 1;
+        while (s.length > 3) {
+          g.unshift(s.slice(-3));
+          s = s.slice(0, -3);
+        }
+        g.unshift(s);
+        o = g[g.length - 1];
+        for (i = g.length - 2; i >= 0; i--, k++) o = g[i] + (k % 2 === 1 ? '.' : "'") + o;
+        return (n < 0 ? '-' : '') + o;
+      }
+
+      function num(el) {
+        var v = el.getAttribute('data-m') ? parseFloat(String(el.value).replace(/\D/g, '')) : parseFloat(el.value);
+        if (isNaN(v)) v = 0;
+        var mn = el.getAttribute('min'),
+          mx = el.getAttribute('max');
+        if (mn !== null && mn !== '' && v < +mn) v = +mn;
+        if (mx !== null && mx !== '' && v > +mx) v = +mx;
+        return v;
+      }
+
+      function setV(el, v) {
+        el.value = el.getAttribute('data-m') ? sep(v) : v;
+      }
+
+      var MONEY = {
+        p: 1,
+        e: 1,
+        m: 1,
+        i: 1
+      };
+
+      function inp(k, f, step, mn, mx) {
+        return MONEY[f] ? '<input type="text" inputmode="numeric" data-m="1" data-k="' + k + '" data-f="' + f + '">' :
+          '<input type="number" min="' + mn + '" max="' + mx + '" step="' + step + '" data-k="' + k + '" data-f="' + f + '">';
+      }
+      $('#bce-cols').innerHTML = TECH.map(function(t) {
+        return '<div class="bce-col" style="border-top-color:' + t.col + '"><h4>' + t.n + '</h4>' +
+          '<label><span>Precio de lista del vehículo</span>' + inp(t.k, 'p') + '<small>COP</small></label>' +
+          '<label><span>Descuento por IVA (UPME)</span>' + inp(t.k, 'di', 0.5, 0, 100) + '<small>% del precio de lista</small></label>' +
+          '<p class="bce-net" data-net="' + t.k + '"></p>' +
+          '<label><span>Rendimiento</span>' + inp(t.k, 'r', 0.1, 0.01, 100) + '<small>' + t.ru + '</small></label>' +
+          '<label><span>Precio de la energía</span>' + inp(t.k, 'e') + '<small>' + t.eu + '</small></label>' +
+          '<label><span>Inflación anual de la energía</span>' + inp(t.k, 'g', 0.1, 0, 30) + '<small>% anual (según escenario, 0 a 30 %)</small></label>' +
+          '<label><span>Mantenimiento</span>' + inp(t.k, 'm') + '<small>COP/km</small></label>' +
+          '<label><span>Valor residual</span>' + inp(t.k, 'v', 1, 0, 100) + '<small>% del precio de lista (0 a 100 %)</small></label>' +
+          '<label class="bce-stl"><span>' + t.st + '</span>' + inp(t.k, 'i') + '<small>COP por vehículo (con infraestructura propia)</small></label>' +
+          '</div>';
+      }).join('');
+      $('#bce-ss').innerHTML = TECH.map(function(t) {
+        return '<label><span>' + t.n + '</span><select data-ss="' + t.k + '"><option value="bajo">Bajo</option><option value="medio">Medio</option><option value="alto">Alto</option><option value="custom">Personalizado</option></select><small>Escenario de inflación</small></label>';
+      }).join('');
+
+      function F(k, f) {
+        var el = $('[data-k="' + k + '"][data-f="' + f + '"]');
+        return el ? num(el) : 0
+      }
+
+      function G(g) {
+        return num($('[data-g="' + g + '"]'))
+      }
+
+      function setT(k, s) {
+        setV($('[data-k="' + k + '"][data-f="g"]'), SCEN[s][k]);
+        cs[k] = s;
+        $('[data-ss="' + k + '"]').value = s;
+      }
+
+      function setAll(s) {
+        TECH.forEach(function(t) {
+          setT(t.k, s)
+        });
+      }
+
+      function load() {
+        var P = PRESETS[$('#bce-tipo').value];
+        TECH.forEach(function(t) {
+          Object.keys(P[t.k]).forEach(function(f) {
+            var el = $('[data-k="' + t.k + '"][data-f="' + f + '"]');
+            if (el) setV(el, P[t.k][f]);
+          });
+        });
+        Object.keys(DEFAULTS).forEach(function(g) {
+          var el = $('[data-g="' + g + '"]');
+          if (el) el.value = DEFAULTS[g];
+        });
+        setAll('medio');
+      }
+
+      function esc() {
+        return {
+          d: F('d', 'g'),
+          x: F('x', 'g')
+        };
+      }
+
+      function par() {
+        var N = Math.max(1, Math.round(G('vida')));
+        return {
+          N: N,
+          d: G('td') / 100,
+          n: Math.min(Math.max(1, Math.round(G('plazo'))), N),
+          km: G('km') * G('dias'),
+          fin: Math.min(G('fin'), 100) / 100
+        };
+      }
+
+      function rcOf(k) {
+        return (k === 'x' ? G('tcE') : G('tcI')) / 100;
+      }
+
+      function netP(k) {
+        return Math.max(0, F(k, 'p') * (1 - F(k, 'di') / 100));
+      }
+
+      function cuotaOf(P, L, rc) {
+        return rc === 0 ? L / P.n : L * rc / (1 - Math.pow(1 + rc, -P.n));
+      }
+
+      function calc(k, own, es) {
+        es = es || esc();
+        var P = par(),
+          N = P.N,
+          d = P.d,
+          pn = netP(k),
+          L = pn * P.fin,
+          cuota = cuotaOf(P, L, rcOf(k)),
+          pvC = 0,
+          af = 0,
+          t;
+        for (t = 1; t <= P.n; t++) pvC += cuota / Math.pow(1 + d, t);
+        for (t = 1; t <= N; t++) af += 1 / Math.pow(1 + d, t);
+        var veh = pn - F(k, 'p') * F(k, 'v') / 100 / Math.pow(1 + d, N),
+          sta = own ? F(k, 'i') : 0,
+          fin = pvC - L;
+        var g = (es[k] || 0) / 100,
+          e0 = P.km / Math.max(F(k, 'r'), 0.0001) * F(k, 'e'),
+          en = 0;
+        for (t = 1; t <= N; t++) en += e0 * Math.pow(1 + g, t - 1) / Math.pow(1 + d, t);
+        var ma = P.km * F(k, 'm') * af,
+          tot = veh + sta + en + ma + fin;
+        return {
+          veh: veh,
+          sta: sta,
+          en: en,
+          ma: ma,
+          fin: fin,
+          capex: veh + sta,
+          opex: en + ma,
+          tot: tot,
+          perKm: tot / Math.max(P.km * N, 1)
+        };
+      }
+      /* Flujos anuales por categoría, año 0..N (descontados si pv) */
+      function flows(k, own, es, pv) {
+        var P = par(),
+          N = P.N,
+          pn = netP(k),
+          pl = F(k, 'p'),
+          L = pn * P.fin,
+          cuota = cuotaOf(P, L, rcOf(k)),
+          g = (es[k] || 0) / 100,
+          e0 = P.km / Math.max(F(k, 'r'), 0.0001) * F(k, 'e'),
+          m = P.km * F(k, 'm'),
+          cap = [pn + (own ? F(k, 'i') : 0)],
+          opx = [0],
+          fnx = [-L],
+          t, f;
+        for (t = 1; t <= N; t++) {
+          f = pv ? Math.pow(1 + P.d, -t) : 1;
+          cap.push(-(t === N ? pl * F(k, 'v') / 100 : 0) * f);
+          opx.push((e0 * Math.pow(1 + g, t - 1) + m) * f);
+          fnx.push((t <= P.n ? cuota : 0) * f);
+        }
+        return {
+          cap: cap,
+          opx: opx,
+          fnx: fnx
+        };
+      }
+
+      function cumOf(Fl) {
+        var out = [],
+          c = 0,
+          t;
+        for (t = 0; t < Fl.cap.length; t++) {
+          c += (fl.c ? Fl.cap[t] : 0) + (fl.o ? Fl.opx[t] : 0) + (fl.f ? Fl.fnx[t] : 0);
+          out.push(c);
+        }
+        return out;
+      }
+
+      function parity(C) {
+        var out = [];
+        [
+          [1, 0]
+        ].forEach(function(pr) {
+          var hi = C[pr[0]][0] >= C[pr[1]][0] ? pr[0] : pr[1],
+            lo = hi === pr[0] ? pr[1] : pr[0],
+            t, d0, d1, f, r = {
+              hi: hi,
+              lo: lo,
+              yr: null,
+              v: 0
+            };
+          for (t = 1; t < C[0].length; t++) {
+            d0 = C[hi][t - 1] - C[lo][t - 1];
+            d1 = C[hi][t] - C[lo][t];
+            if (d0 > 0 && d1 <= 0) {
+              f = d0 / (d0 - d1);
+              r.yr = t - 1 + f;
+              r.v = C[hi][t - 1] + (C[hi][t] - C[hi][t - 1]) * f;
+              break;
+            }
+          }
+          out.push(r);
+        });
+        return out;
+      }
+
+      function parTxt(r, N) {
+        return r.yr === null ? TECH[r.hi].n + ' no alcanza la paridad con ' + TECH[r.lo].n + ' dentro de ' + N + ' años.' :
+          TECH[r.hi].n + ' alcanza la paridad con ' + TECH[r.lo].n + ' en el año ' + fmtN(r.yr, 1) + ': desde ahí acumula menos costo.';
+      }
+
+      function scale(C) {
+        var all = [].concat.apply([], C),
+          mx = Math.max.apply(null, all.concat([1])),
+          mn = Math.min.apply(null, all.concat([0])),
+          rg = mx - mn,
+          e = Math.pow(10, Math.floor(Math.log(rg / 4) / Math.LN10)),
+          m = rg / 4 / e,
+          st = (m <= 1 ? 1 : m <= 2 ? 2 : m <= 5 ? 5 : 10) * e;
+        return {
+          st: st,
+          max: Math.ceil(mx / st) * st,
+          min: Math.floor(mn / st) * st
+        };
+      }
+      var catTxt = function() {
+        return CAT.filter(function(c) {
+          return fl[c.k]
+        }).map(function(c) {
+          return c.n
+        }).join(' + ');
+      };
+
+      /* ---- gráfica de barras: filtros por categoría, vista por tecnología o por rubro, y detalle al pasar el cursor ---- */
+      var bcatTxt = function() {
+        return CAT.filter(function(c) {
+          return bf[c.k]
+        }).map(function(c) {
+          return c.n
+        }).join(' + ');
+      };
+      var selTot = function(r) {
+        return (bf.c ? r.capex : 0) + (bf.o ? r.opex : 0) + (bf.f ? r.fin : 0);
+      };
+      var m1 = function(v) {
+        return fmtN(v / 1e6, 1) + ' M';
+      };
+
+      function rubOn(own) {
+        return RUB.filter(function(u) {
+          return bf[u.c] && (own || u.k !== 'sta');
+        });
+      }
+
+      function sumTxt(R) {
+        var st = R.map(selTot),
+          all = bf.c && bf.o && bf.f,
+          b = st[1] < st[0] ? 1 : 0,
+          o = 1 - b,
+          hi = st[o],
+          diff = Math.abs(st[1] - st[0]),
+          nm = all ? 'TCO' : 'costo (' + bcatTxt() + ')';
+        if (diff < 5e5) return 'Con estos datos, diésel y eléctrico tienen un ' + nm + ' similar.';
+        return 'Con estos datos, ' + (b === 0 ? 'el diésel' : 'el eléctrico') + ' tiene el menor ' + nm + ': ' + fM(diff) + ' M COP menos' + (hi > 0 ? ' (' + fmtN(diff / hi * 100, 1) + ' % menos que ' + (o === 0 ? 'el diésel' : 'el eléctrico') + ')' : '') + '.';
+      }
+
+      function drawBars(R, own) {
+        var rb = rubOn(own),
+          rubro = bv === 'rubro',
+          W = 640,
+          H = 360,
+          l = 62,
+          rr = 16,
+          tp = 30,
+          bm = rubro ? 62 : 46,
+          pw = W - l - rr,
+          ph = H - tp - bm,
+          s = '',
+          i, j, v,
+          hi = [],
+          lo = [];
+        if (rubro) {
+          R.forEach(function(r) {
+            rb.forEach(function(u) {
+              hi.push(Math.max(r[u.k], 0));
+              lo.push(Math.min(r[u.k], 0));
+            });
+          });
+        } else {
+          R.forEach(function(r) {
+            var p = 0,
+              n = 0;
+            rb.forEach(function(u) {
+              var x = r[u.k];
+              if (x > 0) p += x;
+              else n += x;
+            });
+            hi.push(p);
+            lo.push(n);
+          });
+        }
+        var sc = scale([hi, lo]),
+          ys = function(x) {
+            return tp + ph * (1 - (x - sc.min) / (sc.max - sc.min));
+          };
+        for (v = sc.min; v <= sc.max + sc.st / 1e6; v += sc.st) {
+          var gy = ys(v);
+          s += '<line x1="' + l + '" x2="' + (W - rr) + '" y1="' + gy + '" y2="' + gy + '" stroke="#cfe5d6" stroke-width="1"/><text x="' + (l - 6) + '" y="' + (gy + 4) + '" text-anchor="end">' + fM(v) + '</text>';
+        }
+        s += '<line x1="' + l + '" x2="' + (W - rr) + '" y1="' + ys(0) + '" y2="' + ys(0) + '" stroke="#10303A" stroke-width="1.5"/>';
+        s += '<text x="14" y="' + (tp + ph / 2) + '" text-anchor="middle" transform="rotate(-90 14 ' + (tp + ph / 2) + ')">M COP (valor presente)</text>';
+
+        function seg(x, y, w, hh, fill, ti, rk, lbl) {
+          return '<rect class="bce-sg" tabindex="0" role="img" data-t="' + ti + '" data-r="' + rk + '" aria-label="' + lbl + '" x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + w.toFixed(1) + '" height="' + Math.max(hh, 1).toFixed(1) + '" fill="' + fill + '"/>';
+        }
+
+        function inLbl(x, y, hh, u, val) {
+          return hh >= 17 ? '<text x="' + x.toFixed(1) + '" y="' + (y + hh / 2 + 4).toFixed(1) + '" text-anchor="middle" style="fill:' + u.tc + ';font-weight:700;font-size:11px;pointer-events:none">' + fM(val) + '</text>' : '';
+        }
+        if (!rb.length) {
+          lastBars = null;
+          $('#bce-chart').innerHTML = '';
+          return;
+        }
+        if (!rubro) {
+          var band = pw / R.length,
+            bw = Math.min(120, band * .5);
+          R.forEach(function(r, ti) {
+            var cx = l + band * (ti + .5),
+              up = 0,
+              dn = 0,
+              hasN = false,
+              tot = 0,
+              lb = '';
+            rb.forEach(function(u) {
+              var val = r[u.k],
+                y0, y1, txt = TECH[ti].n + ', ' + u.cn + ' ' + u.n + ': ' + fM(val) + ' millones de pesos';
+              tot += val;
+              if (val === 0) return;
+              if (val > 0) {
+                y1 = ys(up + val);
+                y0 = ys(up);
+                up += val;
+              } else {
+                y0 = ys(dn);
+                y1 = ys(dn + val);
+                dn += val;
+                hasN = true;
+              }
+              s += seg(cx - bw / 2, Math.min(y0, y1), bw, Math.abs(y1 - y0), u.col, ti, u.k, txt);
+              lb += inLbl(cx, Math.min(y0, y1), Math.abs(y1 - y0), u, val);
+            });
+            s += lb + '<text class="bce-vl" x="' + cx + '" y="' + (ys(up) - 8) + '" text-anchor="middle">' + (hasN ? 'Neto ' : '') + fM(tot) + ' M</text>';
+            s += '<text class="bce-nm" x="' + cx + '" y="' + (tp + ph + 24) + '" text-anchor="middle">' + TECH[ti].n + '</text>';
+          });
+        } else {
+          var gw = pw / rb.length,
+            bw2 = Math.min(54, gw * .36),
+            gp = 6;
+          rb.forEach(function(u, j2) {
+            var cx = l + gw * (j2 + .5);
+            R.forEach(function(r, ti) {
+              var val = r[u.k],
+                x = cx - bw2 - gp / 2 + ti * (bw2 + gp),
+                y = val >= 0 ? ys(val) : ys(0),
+                hh = Math.abs(ys(val) - ys(0)),
+                txt = u.cn + ' ' + u.n + ', ' + TECH[ti].n + ': ' + fM(val) + ' millones de pesos';
+              s += seg(x, y, bw2, hh, TECH[ti].col, ti, u.k, txt);
+              s += '<text class="bce-vl" x="' + (x + bw2 / 2).toFixed(1) + '" y="' + (val >= 0 ? y - 6 : y + Math.max(hh, 1) + 14).toFixed(1) + '" text-anchor="middle" style="font-size:11px">' + fM(val) + '</text>';
+            });
+            s += '<text x="' + cx + '" y="' + (tp + ph + 18) + '" text-anchor="middle" style="font-size:10px;letter-spacing:.04em">' + u.cn + '</text>' +
+              '<text class="bce-nm" x="' + cx + '" y="' + (tp + ph + 35) + '" text-anchor="middle" style="font-size:12px">' + u.n + '</text>';
+          });
+        }
+        $('#bce-chart').innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" focusable="false">' + s + '</svg>';
+        $('#bce-chart').setAttribute('aria-label', 'Gráfica de barras (' + bcatTxt() + ') en millones de COP: ' + R.map(function(r, i) {
+          return TECH[i].n + ' ' + fM(selTot(r))
+        }).join(', '));
+        $('#bce-bleg').innerHTML = rubro ? TECH.map(function(t) {
+            return '<span style="--c:' + t.col + '">' + t.n + '</span>'
+          }).join('') :
+          rb.map(function(u) {
+            return '<span style="--c:' + u.col + '">' + u.cn + ': ' + u.n.toLowerCase() + '</span>'
+          }).join('');
+        $('#bce-bcap').textContent = 'Mostrando ' + bcatTxt() + ' · ' + (rubro ? 'cada rubro comparado entre tecnologías' : 'barras apiladas por tecnología') + '. Pasa el cursor sobre una barra para ver su valor.';
+        root.querySelectorAll('[data-bc]').forEach(function(b) {
+          b.setAttribute('aria-pressed', bf[b.getAttribute('data-bc')] ? 'true' : 'false');
+        });
+        root.querySelectorAll('[data-bv]').forEach(function(b) {
+          b.setAttribute('aria-pressed', b.getAttribute('data-bv') === bv ? 'true' : 'false');
+        });
+        lastBars = {
+          R: R,
+          rb: rb
+        };
+        hideTip();
+      }
+
+      function tipHTML(ti, rk) {
+        var B = lastBars,
+          u, h = '',
+          rowv = function(on, sw, nm, val) {
+            return '<div class="bce-tr' + (on ? ' bce-th' : '') + '"><span>' + (sw ? '<i style="background:' + sw + '"></i>' : '') + nm + '</span><span>' + m1(val) + '</span></div>';
+          };
+        u = RUB.filter(function(x) {
+          return x.k === rk
+        })[0];
+        if (bv === 'rubro') {
+          h = '<div class="bce-tt">' + u.cn + ' · ' + u.n + '</div>' + B.R.map(function(r, i) {
+            return rowv(i === ti, TECH[i].col, TECH[i].n, r[rk]);
+          }).join('');
+          var d = B.R[1][rk] - B.R[0][rk];
+          h += '<div class="bce-ts bce-tn">Eléctrico − Diésel: <b>' + (d > 0 ? '+' : d < 0 ? '−' : '') + m1(Math.abs(d)) + '</b></div>';
+        } else {
+          var r = B.R[ti],
+            tot = 0;
+          B.rb.forEach(function(x) {
+            tot += r[x.k];
+          });
+          h = '<div class="bce-tt">' + TECH[ti].n + '</div>' + B.rb.map(function(x) {
+              return rowv(x.k === rk, x.col, x.cn + ' · ' + x.n, r[x.k]);
+            }).join('') +
+            '<div class="bce-tr bce-ts"><b>Total</b><b>' + m1(tot) + '</b></div>';
+          if (tot > 0 && r[rk] > 0) h += '<div class="bce-tn">' + u.n + ' = ' + fmtN(r[rk] / tot * 100, 1) + ' % de la barra</div>';
+        }
+        return h;
+      }
+      var tip = $('#bce-tip'),
+        cw = $('#bce-chartw'),
+        tipOn = null;
+
+      function hideTip() {
+        tip.hidden = true;
+        if (tipOn) {
+          tipOn.classList.remove('bce-on');
+          tipOn = null;
+        }
+        cw.classList.remove('bce-hv');
+      }
+
+      function showTip(el, cx, cy) {
+        if (!lastBars) return;
+        if (tipOn !== el) {
+          if (tipOn) tipOn.classList.remove('bce-on');
+          tipOn = el;
+          el.classList.add('bce-on');
+          cw.classList.add('bce-hv');
+          tip.innerHTML = tipHTML(+el.getAttribute('data-t'), el.getAttribute('data-r'));
+        }
+        tip.hidden = false;
+        var b = cw.getBoundingClientRect(),
+          tw = tip.offsetWidth,
+          th = tip.offsetHeight,
+          x = cx - b.left + 16,
+          y = cy - b.top + 16;
+        if (x + tw > b.width) x = cx - b.left - tw - 16;
+        if (x < 0) x = 0;
+        if (y + th > b.height) y = cy - b.top - th - 16;
+        if (y < 0) y = 0;
+        tip.style.left = x + 'px';
+        tip.style.top = y + 'px';
+      }
+      var segOf = function(t) {
+        return t && t.closest ? t.closest('.bce-sg') : null;
+      };
+      cw.addEventListener('pointerover', function(e) {
+        var s = segOf(e.target);
+        if (s) showTip(s, e.clientX, e.clientY);
+        else hideTip();
+      });
+      cw.addEventListener('pointermove', function(e) {
+        var s = segOf(e.target);
+        if (s) showTip(s, e.clientX, e.clientY);
+      });
+      cw.addEventListener('pointerleave', hideTip);
+      cw.addEventListener('focusin', function(e) {
+        var s = segOf(e.target);
+        if (s) {
+          var q = s.getBoundingClientRect();
+          showTip(s, q.left + q.width / 2, q.top + q.height / 2);
+        }
+      });
+      cw.addEventListener('focusout', hideTip);
+      cw.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') hideTip();
+      });
+
+      function render() {
+        var own = $('#bce-infra').value === 'own',
+          es = esc();
+        root.querySelectorAll('.bce-stl').forEach(function(l) {
+          l.hidden = !own;
+        });
+        TECH.forEach(function(t) {
+          var e = $('[data-net="' + t.k + '"]');
+          e.innerHTML = 'Precio neto de beneficios: <b>' + sep(netP(t.k)) + ' COP</b>';
+        });
+        var R = TECH.map(function(t) {
+          return calc(t.k, own, es)
+        });
+        drawBars(R, own);
+        var best = 0;
+        R.forEach(function(r, i) {
+          if (r.tot < R[best].tot) best = i;
+        });
+        $('#bce-sum').textContent = sumTxt(R);
+        $('#bce-tbl').innerHTML = '<caption>Millones de pesos (M COP), a valor presente. El costo por km está en pesos (COP/km). El FINEX puede ser negativo si el crédito cuesta menos que la tasa de descuento.</caption>' +
+          '<tr><th rowspan="2">Tecnología</th><th class="bce-c" colspan="2">CAPEX</th><th class="bce-c" colspan="2">OPEX</th><th>FINEX</th><th rowspan="2">TCO total</th><th rowspan="2">COP/km</th></tr>' +
+          '<tr><th>Vehículo</th><th>Estación</th><th>Energía</th><th>Mant.</th><th>Financ.</th></tr>' +
+          R.map(function(r, i) {
+            return '<tr' + (i === best ? ' class="bce-best"' : '') + '><td>' + TECH[i].n + '</td><td>' + fM(r.veh) + '</td><td>' + fM(r.sta) + '</td><td>' + fM(r.en) + '</td><td>' + fM(r.ma) + '</td><td>' + fM(r.fin) + '</td><td>' + fM(r.tot) + '</td><td>' + fmtN(r.perKm, 0) + '</td></tr>'
+          }).join('');
+        var S = {};
+        Object.keys(SCEN).forEach(function(s) {
+          S[s] = TECH.map(function(t) {
+            var o = {};
+            o[t.k] = SCEN[s][t.k];
+            return calc(t.k, own, o).tot
+          });
+        });
+        $('#bce-sens').innerHTML = '<caption>Millones de pesos (M COP), a valor presente. Cada columna usa la inflación de su propia tecnología en ese escenario.</caption><tr><th>Escenario</th>' + TECH.map(function(t) {
+            return '<th>' + t.n + '</th>'
+          }).join('') + '</tr>' +
+          Object.keys(S).map(function(s) {
+            return '<tr><td>' + SCEN_N[s] + '</td>' + S[s].map(function(v, i) {
+              return '<td' + (cs[TECH[i].k] === s ? ' class="bce-hl"' : '') + '>' + fM(v) + '</td>'
+            }).join('') + '</tr>'
+          }).join('');
+        $('#bce-rates').innerHTML = '<caption>Inflación anual de la energía (% anual) por escenario y tecnología</caption><tr><th>Escenario</th>' + TECH.map(function(t) {
+            return '<th>' + t.n + '</th>'
+          }).join('') + '</tr>' +
+          Object.keys(SCEN).map(function(s) {
+            return '<tr><td>' + SCEN_N[s] + '</td>' + TECH.map(function(t) {
+              return '<td' + (cs[t.k] === s ? ' class="bce-hl"' : '') + '>' + SCEN[s][t.k] + ' %</td>'
+            }).join('') + '</tr>'
+          }).join('');
+        root.querySelectorAll('[data-s]').forEach(function(b) {
+          var s = b.getAttribute('data-s');
+          b.setAttribute('aria-pressed', (cs.d === s && cs.g === s && cs.x === s) ? 'true' : 'false');
+        });
+        root.querySelectorAll('[data-cat]').forEach(function(b) {
+          b.setAttribute('aria-pressed', fl[b.getAttribute('data-cat')] ? 'true' : 'false');
+        });
+
+        /* ---- flujo de caja acumulado, filtrable por categoría ---- */
+        var pv = $('#bce-modo').value !== 'nom',
+          FL = TECH.map(function(t) {
+            return flows(t.k, own, es, pv)
+          }),
+          C = FL.map(cumOf),
+          N = C[0].length - 1,
+          PR = parity(C),
+          W = 640,
+          H = 310,
+          l = 62,
+          r = 16,
+          tp = 18,
+          bm = 40,
+          pw = W - l - r,
+          ph = H - tp - bm,
+          sc = scale(C),
+          xs = function(t) {
+            return l + pw * t / N
+          },
+          ys = function(v) {
+            return tp + ph * (1 - (v - sc.min) / (sc.max - sc.min))
+          },
+          s = '',
+          t, v;
+        for (v = sc.min; v <= sc.max + sc.st / 1e6; v += sc.st) {
+          var gy = ys(v);
+          s += '<line x1="' + l + '" x2="' + (W - r) + '" y1="' + gy + '" y2="' + gy + '" stroke="#cfe5d6" stroke-width="1"/><text x="' + (l - 6) + '" y="' + (gy + 4) + '" text-anchor="end">' + fM(v) + '</text>';
+        }
+        if (sc.min < 0) s += '<line x1="' + l + '" x2="' + (W - r) + '" y1="' + ys(0) + '" y2="' + ys(0) + '" stroke="#10303A" stroke-width="1.5"/>';
+        for (t = 0; t <= N; t++)
+          if (N <= 10 || t % 2 === 0) s += '<text x="' + xs(t) + '" y="' + (H - bm + 16) + '" text-anchor="middle">' + t + '</text>';
+        s += '<text x="' + (l + pw / 2) + '" y="' + (H - 6) + '" text-anchor="middle">Años (0 = inversión inicial)</text><text x="14" y="' + (tp + ph / 2) + '" text-anchor="middle" transform="rotate(-90 14 ' + (tp + ph / 2) + ')">M COP acumulados</text>';
+        TECH.forEach(function(tc, j) {
+          s += '<polyline fill="none" stroke="' + tc.col + '" stroke-width="2.5" points="' + C[j].map(function(v, t) {
+            return xs(t).toFixed(1) + ',' + ys(v).toFixed(1)
+          }).join(' ') + '"/>';
+          C[j].forEach(function(v, t) {
+            s += '<circle cx="' + xs(t).toFixed(1) + '" cy="' + ys(v).toFixed(1) + '" r="3" fill="' + tc.col + '"><title>' + tc.n + ', año ' + t + ': ' + fM(v) + ' M COP</title></circle>';
+          });
+        });
+        PR.forEach(function(p) {
+          if (p.yr !== null) {
+            var px = xs(p.yr),
+              py = ys(p.v);
+            s += '<circle cx="' + px + '" cy="' + py + '" r="8" fill="none" stroke="#0B7A38" stroke-width="2.5"/><text x="' + (px + 11) + '" y="' + (py - 8) + '" style="fill:#0d4f2e;font-weight:700">Año ' + fmtN(p.yr, 1) + '</text>';
+          }
+        });
+        $('#bce-line').innerHTML = '<svg class="bce-svg" viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg">' + s + '</svg>';
+        $('#bce-lleg').innerHTML = TECH.map(function(tc) {
+          return '<span style="--c:' + tc.col + '">' + tc.n + '</span>'
+        }).join('') + '<span style="--c:transparent;border:2px solid #0B7A38;border-radius:50%;padding-left:2px">Punto de paridad</span>';
+        $('#bce-par').innerHTML = '<li><b>Categorías incluidas: ' + catTxt() + '</b> (' + (pv ? 'valor presente' : 'valores nominales') + ')</li>' + PR.map(function(p) {
+          return '<li>' + parTxt(p, N) + '</li>'
+        }).join('');
+        var cats = CAT.filter(function(c) {
+            return fl[c.k]
+          }),
+          colsPer = cats.length + 1,
+          cv = function(j, c, t) {
+            return c.k === 'c' ? FL[j].cap[t] : c.k === 'o' ? FL[j].opx[t] : FL[j].fnx[t];
+          },
+          tots = TECH.map(function() {
+            return cats.map(function() {
+              return 0
+            }).concat([0])
+          });
+        $('#bce-ann').innerHTML = '<caption>Millones de pesos (M COP), ' + (pv ? 'a valor presente' : 'nominales') + '. Año 0 = inversión inicial' + (own ? ' y estaciones' : '') + ', con el desembolso del crédito como FINEX negativo.</caption>' +
+          '<tr><th rowspan="2">Año</th>' + TECH.map(function(tc) {
+            return '<th class="bce-c" colspan="' + colsPer + '">' + tc.n + '</th>'
+          }).join('') + '</tr>' +
+          '<tr>' + TECH.map(function() {
+            return cats.map(function(c) {
+              return '<th>' + c.n + '</th>'
+            }).join('') + '<th>Total</th>'
+          }).join('') + '</tr>' +
+          C[0].map(function(_, t) {
+            return '<tr><td>' + t + '</td>' + TECH.map(function(tc, j) {
+              var sm = 0;
+              var cells = cats.map(function(c, ci) {
+                var x = cv(j, c, t);
+                sm += x;
+                tots[j][ci] += x;
+                return '<td>' + fM(x) + '</td>'
+              }).join('');
+              tots[j][cats.length] += sm;
+              return cells + '<td><b>' + fM(sm) + '</b></td>';
+            }).join('') + '</tr>'
+          }).join('') +
+          '<tr class="bce-sumrow"><td>Total</td>' + tots.map(function(a) {
+            return a.map(function(x) {
+              return '<td>' + fM(x) + '</td>'
+            }).join('')
+          }).join('') + '</tr>';
+
+        $('#bce-assume').innerHTML = ASSUME.map(function(a) {
+          return '<li>' + a + '</li>'
+        }).join('');
+        last = {
+          R: R,
+          S: S,
+          own: own,
+          best: best,
+          C: C,
+          PR: PR,
+          pv: pv,
+          N: N,
+          sc: sc
+        };
+      }
+
+      /* ---------- Reporte PDF (generador mínimo, sin librerías) ---------- */
+      function makePDF(pages) {
+        var o = [],
+          n = pages.length,
+          i, kids = [];
+        for (i = 0; i < n; i++) kids.push((5 + 2 * i) + ' 0 R');
+        o[1] = '<</Type/Catalog/Pages 2 0 R>>';
+        o[2] = '<</Type/Pages/Kids[' + kids.join(' ') + ']/Count ' + n + '>>';
+        o[3] = '<</Type/Font/Subtype/Type1/BaseFont/Helvetica/Encoding/WinAnsiEncoding>>';
+        o[4] = '<</Type/Font/Subtype/Type1/BaseFont/Helvetica-Bold/Encoding/WinAnsiEncoding>>';
+        for (i = 0; i < n; i++) {
+          o[5 + 2 * i] = '<</Type/Page/Parent 2 0 R/MediaBox[0 0 595 842]/Resources<</Font<</F1 3 0 R/F2 4 0 R>>>>/Contents ' + (6 + 2 * i) + ' 0 R>>';
+          o[6 + 2 * i] = '<</Length ' + pages[i].length + '>>\nstream\n' + pages[i] + '\nendstream';
+        }
+        var out = '%PDF-1.4\n',
+          off = [],
+          x;
+        for (i = 1; i < o.length; i++) {
+          off[i] = out.length;
+          out += i + ' 0 obj\n' + o[i] + '\nendobj\n';
+        }
+        x = out.length;
+        out += 'xref\n0 ' + o.length + '\n0000000000 65535 f \n';
+        for (i = 1; i < o.length; i++) out += ('0000000000' + off[i]).slice(-10) + ' 00000 n \n';
+        out += 'trailer\n<</Size ' + o.length + '/Root 1 0 R>>\nstartxref\n' + x + '\n%%EOF';
+        var u = new Uint8Array(out.length);
+        for (i = 0; i < out.length; i++) u[i] = out.charCodeAt(i) & 255;
+        return new Blob([u], {
+          type: 'application/pdf'
+        });
+      }
+      /* Entrega del archivo: descarga directa + enlace de respaldo (por si el navegador o el sitio bloquean la descarga automática) */
+      function deliver(blob, name) {
+        var url, msg = $('#bce-repmsg');
+        if (lastUrl) {
+          try {
+            URL.revokeObjectURL(lastUrl);
+          } catch (e) {}
+        }
+        url = lastUrl = URL.createObjectURL(blob);
+        try {
+          if (navigator.msSaveOrOpenBlob) {
+            navigator.msSaveOrOpenBlob(blob, name);
+          } else {
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = name;
+            a.rel = 'noopener';
+            a.style.display = 'none';
+            (document.body || root).appendChild(a);
+            a.click();
+            (document.body || root).removeChild(a);
+          }
+        } catch (e) {}
+        msg.hidden = false;
+        msg.innerHTML = 'Reporte generado. Si la descarga no empezó, <a href="' + url + '" download="' + name + '" target="_blank" rel="noopener">haz clic aquí para descargarlo</a> o <a href="' + url + '" target="_blank" rel="noopener">ábrelo en una pestaña nueva</a>.';
+      }
+
+      function report() {
+        var L = last,
+          pg = [],
+          cur2 = '',
+          y = 0,
+          M = 40,
+          own = L.own;
+        var rgb = function(h) {
+          return [1, 3, 5].map(function(i) {
+            return (parseInt(h.substr(i, 2), 16) / 255).toFixed(3)
+          }).join(' ')
+        };
+        var INK = rgb('#10303A'),
+          MUT = rgb('#4A6670'),
+          ACC = rgb('#0B7A38'),
+          HEAD = rgb('#10303A'),
+          LN = rgb('#cfe5d6'),
+          CS = ['#0B7A38', '#36D17A', '#7DBBE0', '#D7E600', '#9aa0a6'].map(rgb);
+        var san = function(s) {
+          return String(s).replace(/[\u2013\u2014]/g, '-').replace(/[^\x00-\xff]/g, '-')
+        };
+        var pe = function(s) {
+          return s.replace(/[\\()]/g, '\\$&')
+        };
+
+        function tw(s, z) {
+          var w = 0,
+            c;
+          for (var i = 0; i < s.length; i++) {
+            c = s.charAt(i);
+            w += /[0-9]/.test(c) ? .556 : /[ .,;:'|!ilIjtfr()\-]/.test(c) ? .3 : /[mwMW]/.test(c) ? .85 : /[A-Z]/.test(c) ? .67 : .52;
+          }
+          return w * z;
+        }
+
+        function np() {
+          if (cur2) pg.push(cur2);
+          cur2 = '';
+          y = 800;
+        }
+
+        function need(h) {
+          if (y - h < 50) np();
+        }
+
+        function tx(x, yy, s, z, b, col, al) {
+          s = san(s);
+          if (al === 'r') x -= tw(s, z);
+          cur2 += 'BT /F' + (b ? 2 : 1) + ' ' + z + ' Tf ' + (col || INK) + ' rg ' + x.toFixed(1) + ' ' + yy.toFixed(1) + ' Td (' + pe(s) + ') Tj ET\n';
+        }
+
+        function rc(x, yy, w, h, col) {
+          if (h <= 0) return;
+          cur2 += col + ' rg ' + x.toFixed(1) + ' ' + yy.toFixed(1) + ' ' + w.toFixed(1) + ' ' + h.toFixed(1) + ' re f\n';
+        }
+
+        function h2(s) {
+          need(40);
+          y -= 14;
+          tx(M, y, s, 13, 1, ACC);
+          y -= 5;
+          rc(M, y, 515, 1.2, ACC);
+          y -= 14;
+        }
+
+        function cap(s) {
+          need(26);
+          tx(M, y, s, 8.5, 0, MUT);
+          y -= 12;
+        }
+
+        function para(s, x, z, mw, col) {
+          var w = san(s).split(' '),
+            ln = '',
+            k;
+          for (k = 0; k < w.length; k++) {
+            if (tw(ln + ' ' + w[k], z) > mw && ln) {
+              need(z + 4);
+              tx(x, y, ln, z, 0, col);
+              y -= z * 1.4;
+              ln = w[k];
+            } else ln = ln ? ln + ' ' + w[k] : w[k];
+          }
+          if (ln) {
+            need(z + 4);
+            tx(x, y, ln, z, 0, col);
+            y -= z * 1.4;
+          }
+        }
+
+        function tbl(rows, cw, z) {
+          need(rows.length * (z + 6) + 8);
+          rows.forEach(function(r, ri) {
+            need(z + 9);
+            var x = M;
+            r.forEach(function(c, ci) {
+              if (ci === 0) tx(x + 2, y, c, z, ri === 0, INK);
+              else tx(x + cw[ci] - 4, y, c, z, ri === 0, INK, 'r');
+              x += cw[ci];
+            });
+            y -= 3;
+            rc(M, y, cw.reduce(function(a, b) {
+              return a + b
+            }), ri === 0 ? 1 : .4, LN);
+            y -= z + 3;
+          });
+          y -= 4;
+        }
+        np();
+        tx(M, y, 'Reporte de costo total de propiedad (TCO)', 19, 1, HEAD);
+        y -= 18;
+        tx(M, y, 'Buses escolares: diésel y eléctrico · Generado el ' + new Date().toLocaleDateString('es-CO'), 9, 0, MUT);
+        y -= 20;
+        tx(M, y, (L.best === 0 ? 'El diésel tiene el menor TCO.' : TECH[L.best].n + ' tiene el menor TCO.') + ' Cifras en millones de pesos (M COP), a valor presente.', 10.5, 1, INK);
+        y -= 8;
+
+        h2('Resultados');
+        var ks = ['veh', 'sta', 'en', 'ma', 'fin'],
+          ch = 150,
+          bw = 90,
+          gap = (515 - 2 * bw) / 3,
+          pos = L.R.map(function(r) {
+            return ks.reduce(function(a, k) {
+              return a + Math.max(r[k], 0)
+            }, 0)
+          }),
+          neg = L.R.map(function(r) {
+            return ks.reduce(function(a, k) {
+              return a + Math.min(r[k], 0)
+            }, 0)
+          }),
+          mxp = Math.max.apply(null, pos.concat([1])),
+          mxn = -Math.min.apply(null, neg.concat([0])),
+          u = ch / (mxp + mxn);
+        need(ch + 60);
+        var base = y - mxp * u - 16;
+        L.R.forEach(function(r, i) {
+          var bx = M + gap + i * (bw + gap),
+            yu = base,
+            yd = base;
+          ks.forEach(function(k, j) {
+            var v = r[k],
+              hh = Math.abs(v) * u;
+            if (v >= 0) {
+              rc(bx, yu, bw, hh, CS[j]);
+              yu += hh;
+            } else {
+              yd -= hh;
+              rc(bx, yd, bw, hh, CS[j]);
+            }
+          });
+          tx(bx + bw / 2 - tw(fM(r.tot) + ' M', 9.5) / 2, yu + 5, fM(r.tot) + ' M', 9.5, 1, INK);
+          tx(bx + bw / 2 - tw(TECH[i].n, 9.5) / 2, base - mxn * u - 13, TECH[i].n, 9.5, 1, INK);
+        });
+        rc(M, base - 1, 515, 1.2, LN);
+        y = base - mxn * u - 30;
+        var lg = ['CAPEX vehículo', 'CAPEX estación', 'OPEX energía', 'OPEX mant.', 'FINEX'],
+          lx = M;
+        lg.forEach(function(s, j) {
+          rc(lx, y, 8, 8, CS[j]);
+          tx(lx + 12, y, s, 8, 0, INK);
+          lx += tw(s, 8) + 28;
+        });
+        y -= 18;
+        cap('Millones de pesos (M COP), a valor presente. COP/km en pesos.');
+        cap('CAPEX: vehículo y estación · OPEX: energía y mantenimiento · FINEX: financiamiento.');
+        tbl([
+          ['Tecnología', 'Vehículo', 'Estación', 'Energía', 'Mant.', 'FINEX', 'TCO total', 'COP/km']
+        ].concat(L.R.map(function(r, i) {
+          return [TECH[i].n, fM(r.veh), fM(r.sta), fM(r.en), fM(r.ma), fM(r.fin), fM(r.tot), fmtN(r.perKm)]
+        })), [103, 57, 62, 62, 58, 50, 64, 59], 8.5);
+        cap('Resumen por categoría. Millones de pesos (M COP), a valor presente.');
+        tbl([
+          ['Tecnología', 'CAPEX', 'OPEX', 'FINEX', 'TCO total']
+        ].concat(L.R.map(function(r, i) {
+          return [TECH[i].n, fM(r.capex), fM(r.opex), fM(r.fin), fM(r.tot)]
+        })), [175, 85, 85, 85, 85], 9);
+
+        h2('Flujo de caja acumulado y paridad');
+        cap('Millones de pesos (M COP), ' + (L.pv ? 'a valor presente' : 'valores nominales') + '. Categorías incluidas: ' + catTxt() + '. Los cuadrados marcan la paridad.');
+        need(215);
+        var N = L.N,
+          gx = M + 44,
+          gw = 515 - 54,
+          gh = 150,
+          gb = y - gh - 6,
+          sc = L.sc,
+          i, t, v,
+          xs = function(q) {
+            return gx + gw * q / N
+          },
+          ys = function(w) {
+            return gb + gh * (w - sc.min) / (sc.max - sc.min)
+          };
+        for (v = sc.min; v <= sc.max + sc.st / 1e6; v += sc.st) {
+          var gy = ys(v);
+          rc(gx, gy, gw, .5, LN);
+          tx(gx - 4, gy - 3, fM(v), 7.5, 0, MUT, 'r');
+        }
+        if (sc.min < 0) rc(gx, ys(0), gw, 1, INK);
+        for (t = 0; t <= N; t++)
+          if (N <= 10 || t % 2 === 0) tx(xs(t) - tw(String(t), 7.5) / 2, gb - 24, String(t), 7.5, 0, MUT);
+        tx(gx + gw / 2 - 60, gb - 35, 'Años (0 = inversión inicial)', 7.5, 0, MUT);
+        TECH.forEach(function(tc, j) {
+          cur2 += rgb(tc.col) + ' RG 1.6 w ' + L.C[j].map(function(w, q) {
+            return xs(q).toFixed(1) + ' ' + ys(w).toFixed(1) + (q ? ' l' : ' m')
+          }).join(' ') + ' S\n';
+        });
+        L.PR.forEach(function(p) {
+          if (p.yr !== null) {
+            var px = xs(p.yr),
+              py = ys(p.v);
+            rc(px - 3.5, py - 3.5, 7, 7, ACC);
+            tx(px + 6, py + 4, 'Año ' + fmtN(p.yr, 1), 8, 1, HEAD);
+          }
+        });
+        y = gb - 48;
+        var lx2 = M;
+        TECH.forEach(function(tc) {
+          rc(lx2, y, 10, 4, rgb(tc.col));
+          tx(lx2 + 14, y - 1, tc.n, 8, 0, INK);
+          lx2 += tw(tc.n, 8) + 36;
+        });
+        y -= 16;
+        L.PR.forEach(function(p) {
+          para('- ' + parTxt(p, N), M + 2, 9, 510, INK);
+        });
+        y -= 4;
+
+        h2('Inflación de la energía por escenario y tecnología');
+        cap('Inflación anual de la energía (% anual), por escenario y tecnología.');
+        tbl([
+          ['Escenario'].concat(TECH.map(function(t) {
+            return t.n
+          }))
+        ].concat(Object.keys(SCEN).map(function(s) {
+          return [SCEN_N[s]].concat(TECH.map(function(t) {
+            return SCEN[s][t.k] + ' %' + (cs[t.k] === s ? ' *' : '')
+          }))
+        })), [215, 150, 150], 9);
+        cap('TCO por escenario y tecnología. Millones de pesos (M COP), a valor presente.');
+        tbl([
+          ['Escenario'].concat(TECH.map(function(t) {
+            return t.n
+          }))
+        ].concat(Object.keys(L.S).map(function(s) {
+          return [SCEN_N[s]].concat(L.S[s].map(function(v, i) {
+            return fM(v) + (cs[TECH[i].k] === s ? ' *' : '')
+          }))
+        })), [215, 150, 150], 9);
+        para('* Escenario elegido para cada tecnología: ' + TECH.map(function(t) {
+          return t.n + ': ' + SCEN_N[cs[t.k]] + ' (' + F(t.k, 'g') + ' %)'
+        }).join(' · ') + '.', M, 8.5, 515, MUT);
+
+        h2('Datos de entrada');
+        var tipo = $('#bce-tipo').options[$('#bce-tipo').selectedIndex].text;
+        [
+          ['Tipología', tipo],
+          ['Infraestructura de abastecimiento', own ? 'Con infraestructura propia' : 'Sin infraestructura propia'],
+          ['Recorrido diario', G('km') + ' km/día'],
+          ['Días de operación', G('dias') + ' días/año'],
+          ['Vida útil analizada', G('vida') + ' años'],
+          ['Porcentaje financiado', G('fin') + ' %'],
+          ['Tasa crédito: diésel', G('tcI') + ' % anual'],
+          ['Tasa crédito: eléctricos', G('tcE') + ' % anual'],
+          ['Plazo del crédito', G('plazo') + ' años'],
+          ['Tasa de descuento', G('td') + ' % anual']
+        ].forEach(function(r) {
+          need(14);
+          tx(M + 2, y, r[0], 9, 0, MUT);
+          tx(M + 190, y, r[1], 9, 0, INK);
+          y -= 13;
+        });
+        y -= 8;
+        cap('Valores en pesos colombianos (COP), no en millones.');
+        var fl2 = [
+          ['p', 'Precio de lista (COP)'],
+          ['di', 'Descuento por IVA (UPME, %)'],
+          ['n', 'Precio neto de beneficios (COP)'],
+          ['r', 'Rendimiento'],
+          ['e', 'Precio de la energía'],
+          ['g', 'Inflación de la energía (% anual)'],
+          ['m', 'Mantenimiento (COP/km)'],
+          ['v', 'Valor residual (%)'],
+          ['i', 'Inversión en estación (COP)']
+        ];
+        tbl([
+          ['Dato'].concat(TECH.map(function(t) {
+            return t.n
+          }))
+        ].concat(fl2.map(function(f) {
+          return [f[1]].concat(TECH.map(function(t) {
+            var v = f[0] === 'n' ? netP(t.k) : F(t.k, f[0]);
+            if (f[0] === 'i' && !own) return 'No aplica';
+            return (MONEY[f[0]] || f[0] === 'n' ? sep(v) : fmtN(v, 2)) + (f[0] === 'r' ? ' ' + t.ru : f[0] === 'e' ? ' ' + t.eu : '')
+          }))
+        })), [215, 150, 150], 8.5);
+
+        h2('Supuestos');
+        ASSUME.forEach(function(a, i) {
+          need(24);
+          para((i + 1) + '. ' + a, M + 2, 8.5, 505, INK);
+          y -= 2;
+        });
+        y -= 6;
+        para('Este reporte depende de los datos ingresados. Los valores precargados y los escenarios son ilustrativos hasta que se reemplacen por datos reales.', M, 8, 515, MUT);
+        pg.push(cur2);
+        deliver(makePDF(pg), 'reporte-tco-buses-escolares.pdf');
+      }
+
+      root.addEventListener('input', function(ev) {
+        var tg = ev.target,
+          ss = tg.getAttribute && tg.getAttribute('data-ss');
+        if (tg.getAttribute && tg.getAttribute('data-m')) {
+          var n = parseFloat(String(tg.value).replace(/\D/g, ''));
+          tg.value = isNaN(n) ? '' : sep(n);
+        }
+        if (ss && tg.value !== 'custom') {
+          setT(ss, tg.value);
+        }
+        if (ss && tg.value === 'custom') {
+          cs[ss] = 'custom';
+        }
+        if (tg.getAttribute && tg.getAttribute('data-f') === 'g') {
+          var k = tg.getAttribute('data-k');
+          cs[k] = 'custom';
+          $('[data-ss="' + k + '"]').value = 'custom';
+        }
+        render();
+      });
+      root.addEventListener('change', function(ev) {
+        var tg = ev.target;
+        if (tg.getAttribute && (tg.type === 'number' || tg.getAttribute('data-m'))) {
+          setV(tg, num(tg));
+        }
+        render();
+      });
+      root.querySelectorAll('[data-s]').forEach(function(b) {
+        b.addEventListener('click', function() {
+          setAll(b.getAttribute('data-s'));
+          render();
+        });
+      });
+      root.querySelectorAll('[data-cat]').forEach(function(b) {
+        b.addEventListener('click', function() {
+          var c = b.getAttribute('data-cat'),
+            on = CAT.filter(function(x) {
+              return fl[x.k]
+            }).length;
+          if (fl[c] && on === 1) return;
+          fl[c] = !fl[c];
+          render();
+        });
+      });
+      root.querySelectorAll('[data-bc]').forEach(function(b) {
+        b.addEventListener('click', function() {
+          var c = b.getAttribute('data-bc'),
+            on = CAT.filter(function(x) {
+              return bf[x.k]
+            }).length;
+          if (bf[c] && on === 1) return;
+          bf[c] = !bf[c];
+          render();
+        });
+      });
+      root.querySelectorAll('[data-bv]').forEach(function(b) {
+        b.addEventListener('click', function() {
+          bv = b.getAttribute('data-bv');
+          render();
+        });
+      });
+      $('#bce-tipo').addEventListener('change', function() {
+        load();
+        render();
+      });
+      $('#bce-reset').addEventListener('click', function() {
+        load();
+        render();
+      });
+      $('#bce-rep').addEventListener('click', function() {
+        try {
+          report();
+        } catch (e) {
+          var m = $('#bce-repmsg');
+          m.hidden = false;
+          m.textContent = 'No se pudo generar el reporte. Revisa que los datos estén completos e inténtalo de nuevo.';
+        }
+      });
+      /* ===== Datos externos: tco_parametros.csv ===== */
+      var LIM = {},
+        TIPOS = [],
+        VH = {},
+        TT = ['d', 'x'];
+
+      function csvRows(t) {
+        var r = [],
+          row = [],
+          f = '',
+          q = 0,
+          i, c;
+        t = t.replace(/^\uFEFF/, '');
+        for (i = 0; i < t.length; i++) {
+          c = t[i];
+          if (q) {
+            if (c === '"') {
+              if (t[i + 1] === '"') {
+                f += '"';
+                i++;
+              } else q = 0;
+            } else f += c;
+          } else if (c === '"') q = 1;
+          else if (c === ',') {
+            row.push(f);
+            f = '';
+          } else if (c === '\n' || c === '\r') {
+            if (c === '\r' && t[i + 1] === '\n') i++;
+            row.push(f);
+            r.push(row);
+            row = [];
+            f = '';
+          } else f += c;
+        }
+        if (f || row.length) {
+          row.push(f);
+          r.push(row);
+        }
+        var h = r.shift() || [];
+        return r.filter(function(x) {
+          return x.length > 1
+        }).map(function(x) {
+          var o = {};
+          h.forEach(function(k, j) {
+            o[k] = x[j] || ''
+          });
+          return o;
+        });
+      }
+
+      function nv(v) {
+        if (v === '' || v == null) return null;
+        var x = parseFloat(String(v).replace(',', '.'));
+        return isNaN(x) ? null : x;
+      }
+
+      function readCfg(txt) {
+        csvRows(txt).forEach(function(r) {
+          var g = r.grupo,
+            v = nv(r.valor);
+          if (g === 'tipologia') {
+            TIPOS.push({
+              k: r.clave,
+              n: r.etiqueta || r.clave,
+              s: v === 1
+            });
+          } else if (g === 'vehiculo') {
+            if (v !== null && TT.indexOf(r.tecnologia) > -1) {
+              VH[r.tipologia] = VH[r.tipologia] || {};
+              VH[r.tipologia][r.tecnologia] = VH[r.tipologia][r.tecnologia] || {};
+              VH[r.tipologia][r.tecnologia][r.clave] = v;
+            }
+          } else if (g === 'general') {
+            if (v !== null) DEFAULTS[r.clave] = v;
+            LIM['g:' + r.clave] = r;
+          } else if (g === 'limites_vehiculo') {
+            LIM['k:' + r.clave] = r;
+          } else if (g === 'escenario') {
+            if (v !== null && SCEN[r.clave] && TT.indexOf(r.tecnologia) > -1) SCEN[r.clave][r.tecnologia] = v;
+          }
+        });
+        var ok = [];
+        TIPOS.forEach(function(t) {
+          var V = VH[t.k];
+          if (!V || !V.d || !V.x || PRESETS[t.k]) return;
+          var o = {};
+          TT.forEach(function(c) {
+            o[c] = {
+              p: 0,
+              di: 0,
+              r: 1,
+              e: 0,
+              m: 0,
+              v: 0,
+              i: 0
+            };
+            Object.keys(V[c]).forEach(function(f) {
+              if (f in o[c]) o[c][f] = V[c][f];
+            });
+          });
+          PRESETS[t.k] = o;
+          ok.push(t);
+        });
+        TIPOS = ok;
+      }
+
+      function buildTipos() {
+        var s = $('#bce-tipo'),
+          sel = TIPOS[0].k,
+          done = false;
+        s.innerHTML = '';
+        TIPOS.forEach(function(t) {
+          var o = document.createElement('option');
+          o.value = t.k;
+          o.textContent = t.n;
+          s.appendChild(o);
+          if (t.s && !done) {
+            sel = t.k;
+            done = true;
+          }
+        });
+        s.value = sel;
+      }
+
+      function applyLimits() {
+        Object.keys(LIM).forEach(function(key) {
+          var r = LIM[key],
+            g = key.charAt(0) === 'g',
+            nm = key.slice(2),
+            els = root.querySelectorAll(g ? '[data-g="' + nm + '"]' : '[data-k][data-f="' + nm + '"]');
+          Array.prototype.forEach.call(els, function(el) {
+            if (r.min !== '') el.setAttribute('min', r.min);
+            if (r.max !== '') el.setAttribute('max', r.max);
+            if (r.paso !== '' && el.type === 'number') el.setAttribute('step', r.paso);
+            var lb = el.parentNode,
+              sm = lb.querySelector('small'),
+              sp = lb.querySelector('span');
+            if (r.ayuda && sm) sm.textContent = r.ayuda;
+            if (g && r.etiqueta && sp) sp.textContent = r.etiqueta;
+          });
+        });
+      }
+
+      function fail(msg) {
+        var e = $('#bce-err');
+        e.hidden = false;
+        e.textContent = msg;
+        $('#bce-app').hidden = true;
+      }
+      var MSG = 'No se pudieron cargar los parámetros de la calculadora (tco_parametros.csv). Abre el sitio desde un servidor web (no con doble clic) y verifica que el archivo esté en la misma carpeta que index.html.';
+      if (typeof fetch !== 'function') {
+        fail(MSG);
+        return;
+      }
+      fetch('tco_parametros.csv').then(function(r) {
+        return r.ok ? r.text() : Promise.reject();
+      }).then(function(t) {
+        readCfg(t);
+        if (!TIPOS.length) {
+          fail('El archivo tco_parametros.csv no tiene tipologías con datos de diésel y eléctrico.');
+          return;
+        }
+        buildTipos();
+        applyLimits();
+        load();
+        render();
+      }, function() {
+        fail(MSG);
+      });
+    })();
+  </script>
