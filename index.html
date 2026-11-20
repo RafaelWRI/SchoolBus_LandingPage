@@ -1817,7 +1817,7 @@
                 <div class="bce-ctl">
                   <div>
                     <div class="bce-lb">Categorías incluidas</div>
-                    <div class="bce-seg" role="group" aria-label="Filtrar la gráfica de barras por categoría">
+                    <div class="bce-seg" role="group" aria-label="Filtrar la gráfica de barras y el flujo de caja por categoría">
                       <button type="button" data-bc="c" aria-pressed="true">CAPEX</button>
                       <button type="button" data-bc="o" aria-pressed="true">OPEX</button>
                       <button type="button" data-bc="f" aria-pressed="true">FINEX</button>
@@ -1859,13 +1859,7 @@
                     <small>Millones de pesos (M COP)</small>
                   </label>
                   <div>
-                    <div style="font-size:16px;font-weight:700;margin-bottom:6px">Categorías incluidas</div>
-                    <div class="bce-seg" style="margin:0" role="group" aria-label="Filtrar por categoría">
-                      <button type="button" data-cat="c" aria-pressed="true">CAPEX</button>
-                      <button type="button" data-cat="o" aria-pressed="true">OPEX</button>
-                      <button type="button" data-cat="f" aria-pressed="true">FINEX</button>
-                    </div>
-                    <small class="bce-mut" style="font-size:15px">CAPEX: inversión · OPEX: operación · FINEX: financiamiento</small>
+                    <small class="bce-mut" style="font-size:15px">Las categorías incluidas (CAPEX: inversión · OPEX: operación · FINEX: financiamiento) se eligen con los botones de la gráfica de barras.</small>
                   </div>
                 </div>
                 <div id="bce-line" role="img" aria-label="Flujo de caja acumulado por tecnología"></div>
@@ -2248,11 +2242,7 @@
           k: 'f',
           n: 'FINEX'
         }],
-        fl = {
-          c: true,
-          o: true,
-          f: true
-        };
+        fl = bf; /* el flujo de caja usa el mismo filtro de categorías de la gráfica de barras */
       var cs = {
           d: 'medio',
           x: 'medio'
@@ -2393,6 +2383,25 @@
         return rc === 0 ? L / P.n : L * rc / (1 - Math.pow(1 + rc, -P.n));
       }
 
+      /* Tabla de amortización (cuota fija): int[t-1] = intereses del año t, cap[t-1] = abono a capital del año t */
+      function amort(P, L, rc) {
+        var cuota = cuotaOf(P, L, rc),
+          B = L,
+          it = [],
+          ca = [],
+          t, i;
+        for (t = 1; t <= P.n; t++) {
+          i = B * rc;
+          it.push(i);
+          ca.push(t === P.n ? B : cuota - i);
+          B -= ca[t - 1];
+        }
+        return {
+          int: it,
+          cap: ca
+        };
+      }
+
       function calc(k, own, es) {
         es = es || esc();
         var P = par(),
@@ -2400,15 +2409,16 @@
           d = P.d,
           pn = netP(k),
           L = pn * P.fin,
-          cuota = cuotaOf(P, L, rcOf(k)),
-          pvC = 0,
+          am = amort(P, L, rcOf(k)),
+          pvI = 0,
           af = 0,
           t;
-        for (t = 1; t <= P.n; t++) pvC += cuota / Math.pow(1 + d, t);
+        /* Año 0: inversión total (vehículo + estación). El FINEX son solo los intereses del valor financiado; el capital no se vuelve a contar. */
+        for (t = 1; t <= P.n; t++) pvI += am.int[t - 1] / Math.pow(1 + d, t);
         for (t = 1; t <= N; t++) af += Math.pow(1 + MANT_G, t - 1) / Math.pow(1 + d, t);
         var veh = pn - F(k, 'p') * F(k, 'v') / 100 / Math.pow(1 + d, N),
           sta = own ? F(k, 'i') : 0,
-          fin = pvC - L;
+          fin = pvI;
         var g = (es[k] || 0) / 100,
           e0 = P.km / Math.max(F(k, 'r'), 0.0001) * F(k, 'e'),
           en = 0;
@@ -2434,19 +2444,19 @@
           pn = netP(k),
           pl = F(k, 'p'),
           L = pn * P.fin,
-          cuota = cuotaOf(P, L, rcOf(k)),
+          am = amort(P, L, rcOf(k)),
           g = (es[k] || 0) / 100,
           e0 = P.km / Math.max(F(k, 'r'), 0.0001) * F(k, 'e'),
           m = P.km * F(k, 'm'),
           cap = [pn + (own ? F(k, 'i') : 0)],
           opx = [0],
-          fnx = [-L],
+          fnx = [0],
           t, f;
         for (t = 1; t <= N; t++) {
           f = pv ? Math.pow(1 + P.d, -t) : 1;
           cap.push(-(t === N ? pl * F(k, 'v') / 100 : 0) * f);
           opx.push((e0 * Math.pow(1 + g, t - 1) + m * Math.pow(1 + MANT_G, t - 1)) * f);
-          fnx.push((t <= P.n ? cuota : 0) * f);
+          fnx.push((t <= P.n ? am.int[t - 1] : 0) * f);
         }
         return {
           cap: cap,
@@ -2640,7 +2650,7 @@
               s += seg(cx - bw / 2, Math.min(y0, y1), bw, Math.abs(y1 - y0), u.col, ti, u.k, txt);
               lb += inLbl(cx, Math.min(y0, y1), Math.abs(y1 - y0), u, val);
             });
-            s += lb + '<text class="bce-vl" x="' + cx + '" y="' + (ys(up) - 8) + '" text-anchor="middle">' + (hasN ? 'Neto ' : '') + fM(tot) + ' M</text>';
+            s += lb + '<text class="bce-vl" x="' + cx + '" y="' + (ys(up) - 8) + '" text-anchor="middle">' + (hasN ? 'Neto2 ' : '') + fM(tot) + ' M</text>';
             s += '<text class="bce-nm" x="' + cx + '" y="' + (tp + ph + 24) + '" text-anchor="middle">' + TECH[ti].n + '</text>';
           });
         } else {
@@ -2794,7 +2804,7 @@
           if (r.tot < R[best].tot) best = i;
         });
         $('#bce-sum').textContent = sumTxt(R);
-        $('#bce-tbl').innerHTML = '<caption>Millones de pesos (M COP), a valor presente. El costo por km está en pesos (COP/km). El FINEX puede ser negativo si el crédito cuesta menos que la tasa de descuento.</caption>' +
+        $('#bce-tbl').innerHTML = '<caption>Millones de pesos (M COP), a valor presente. El costo por km está en pesos (COP/km). El CAPEX es la inversión total en el año 0; el FINEX corresponde solo a los intereses del valor financiado.</caption>' +
           '<tr><th rowspan="2">Tecnología</th><th class="bce-c" colspan="2">CAPEX</th><th class="bce-c" colspan="2">OPEX</th><th>FINEX</th><th rowspan="2">TCO total</th><th rowspan="2">COP/km</th></tr>' +
           '<tr><th>Vehículo</th><th>Estación</th><th>Energía</th><th>Mant.</th><th>Financ.</th></tr>' +
           R.map(function(r, i) {
@@ -2827,9 +2837,6 @@
         root.querySelectorAll('[data-s]').forEach(function(b) {
           var s = b.getAttribute('data-s');
           b.setAttribute('aria-pressed', (cs.d === s && cs.g === s && cs.x === s) ? 'true' : 'false');
-        });
-        root.querySelectorAll('[data-cat]').forEach(function(b) {
-          b.setAttribute('aria-pressed', fl[b.getAttribute('data-cat')] ? 'true' : 'false');
         });
 
         /* ---- flujo de caja acumulado, filtrable por categoría ---- */
@@ -2899,7 +2906,7 @@
               return 0
             }).concat([0])
           });
-        $('#bce-ann').innerHTML = '<caption>Millones de pesos (M COP), ' + (pv ? 'a valor presente' : 'nominales') + '. Año 0 = inversión inicial' + (own ? ' y estaciones' : '') + ', con el desembolso del crédito como FINEX negativo.</caption>' +
+        $('#bce-ann').innerHTML = '<caption>Millones de pesos (M COP), ' + (pv ? 'a valor presente' : 'nominales') + '. Año 0 = inversión total del vehículo' + (own ? ' y estaciones' : '') + '. El FINEX son solo los intereses del valor financiado.</caption>' +
           '<tr><th rowspan="2">Año</th>' + TECH.map(function(tc) {
             return '<th class="bce-c" colspan="' + colsPer + '">' + tc.n + '</th>'
           }).join('') + '</tr>' +
@@ -3351,17 +3358,6 @@
       root.querySelectorAll('[data-s]').forEach(function(b) {
         b.addEventListener('click', function() {
           setAll(b.getAttribute('data-s'));
-          render();
-        });
-      });
-      root.querySelectorAll('[data-cat]').forEach(function(b) {
-        b.addEventListener('click', function() {
-          var c = b.getAttribute('data-cat'),
-            on = CAT.filter(function(x) {
-              return fl[x.k]
-            }).length;
-          if (fl[c] && on === 1) return;
-          fl[c] = !fl[c];
           render();
         });
       });
